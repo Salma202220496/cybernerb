@@ -1,0 +1,442 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #8daedb;
+  color: white;
+}
+
+.app {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top right, #12345c, transparent 35%),
+    #07111f;
+}
+
+.navbar {
+  height: 70px;
+  padding: 0 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #203852;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.nav-text {
+  color: #94a3b8;
+}
+
+.home {
+  width: 86%;
+  max-width: 1100px;
+  margin: auto;
+  padding: 80px 0;
+}
+
+.hero {
+  max-width: 700px;
+  margin-bottom: 70px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 9px 15px;
+  border-radius: 30px;
+  background: #102b45;
+  color: #38bdf8;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-size: 58px;
+  margin: 0 0 20px;
+}
+
+.hero h1 span {
+  color: #38bdf8;
+}
+
+.hero p {
+  color: #94a3b8;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.training h2 {
+  font-size: 28px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: #6c96c9;
+  border: 1px solid #203852;
+  border-radius: 18px;
+  padding: 28px;
+}
+
+.card.active {
+  cursor: pointer;
+}
+
+.card.active:hover {
+  border-color: #2d6178;
+  transform: translateY(-4px);
+  transition: 0.2s;
+}
+
+.icon {
+  font-size: 40px;
+}
+
+.card h3 {
+  font-size: 21px;
+}
+
+.card p {
+  color: #ffffff !important;
+}
+
+.card button {
+  width: 100%;
+  padding: 13px;
+  border: 0;
+  border-radius: 9px;
+  background: #0ea5e9;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.card span {
+  color: #64748b;
+}
+
+.progress {
+  margin-top: 45px;
+  padding: 25px;
+  background: #0b1a2c;
+  border: 1px solid #203852;
+  border-radius: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.scenario-header h1 {
+  margin: 0;
+  font-size: 32px;
+  color: #ffffff;
+}
+
+.scenario-header p {
+  margin: 5px 0 0;
+  color: #94a3b8;
+}
+
+.progress p {
+  color: #94a3b8;
+}
+
+.score {
+  text-align: center;
+}
+
+.score strong {
+  display: block;
+  font-size: 35px;
+  color: #38bdf8;
+}
+
+.score small {
+  color: #64748b;
+}
+
+@media (max-width: 800px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+  }
+}
+/* =========================
+   PHISHING SCENARIO
+========================= */
+
+.scenario-container {
+  width: 90%;
+  max-width: 900px;
+  margin: auto;
+  padding: 45px 0;
+}
+
+.back-button {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 15px;
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+.back-button:hover {
+  color: #133a4b;
+}
+
+.scenario-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.scenario-header > span {
+  font-size: 45px;
+}
+
+.scenario-header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.scenario-header p {
+  margin: 5px 0 0;
+  color: #64748b;
+}
+
+/* Email */
+
+.email-card {
+  background: white;
+  color: #0f1b34;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+.email-top {
+  padding: 22px;
+  background: #f1f5f9;
+  border-bottom: 1px solid #dbe3ec;
+}
+
+.email-top div {
+  margin-bottom: 10px;
+}
+
+.email-top div:last-child {
+  margin-bottom: 0;
+}
+
+.email-top strong {
+  margin-right: 8px;
+}
+
+.email-body {
+  padding: 30px;
+  line-height: 1.7;
+  font-size: 16px;
+  color:#07111f;
+}
+
+.fake-link {
+  border: none;
+  background: #2563eb;
+  color: white;
+  padding: 13px 25px;
+  border-radius: 7px;
+  cursor: pointer;
+  margin: 10px 0 20px;
+}
+
+/* Question */
+
+.question-card {
+  padding: 30px;
+  border: 1px solid #203852;
+  border-radius: 16px;
+  background: #0b1a2c;
+}
+
+.question-card h2 {
+  margin-top: 0;
+}
+
+.question-card > p {
+  color: #94a3b8;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 25px;
+}
+
+.action-button {
+  padding: 16px;
+  border: 1px solid #29435f;
+  border-radius: 10px;
+  background: #102238;
+  color: white;
+  cursor: pointer;
+  text-align: left;
+  font-size: 15px;
+}
+
+.action-button:hover {
+  border-color: #38bdf8;
+  background: #142d47;
+}
+
+/* Feedback */
+
+.feedback {
+  margin-top: 25px;
+  padding: 25px;
+  border-radius: 14px;
+  background: #071a2a;
+}
+
+.feedback p,
+.feedback li {
+  color: #cbd5e1;
+  line-height: 1.7;
+}
+
+.feedback ul {
+  padding-left: 20px;
+}
+
+.correct {
+  color: #22c55e;
+}
+
+.wrong {
+  color: #ef4444;
+}
+
+.points {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: #064e3b;
+  color: #4ade80;
+  font-weight: bold;
+}
+
+.wrong-points {
+  background: #451a03;
+  color: #fb923c;
+}
+
+.next-button {
+  display: block;
+  margin-top: 25px;
+  padding: 13px 20px;
+  border: none;
+  border-radius: 9px;
+  background: #0ea5e9;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.next-button:hover {
+  background: #0284c7;
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+  .actions {
+    grid-template-columns: 1fr;
+  }
+
+  .scenario-header h1 {
+    font-size: 25px;
+  }
+
+  .email-body {
+    padding: 20px;
+  }
+}
+/* Fix text visibility */
+
+.scenario-container {
+  color: #615151;
+}
+
+.scenario-container h1,
+.scenario-container h2,
+.scenario-container h3 {
+  color: #ffffff;
+}
+
+.scenario-container p {
+  color: #cbd5e1;
+}
+
+.scenario-header h1 {
+  color: #ffffff !important;
+}
+
+.scenario-header p {
+  color: #94a3b8 !important;
+}
+
+.question-card h2 {
+  color: #ffffff !important;
+}
+
+.question-card p {
+  color: #cbd5e1 !important;
+}
+
+.action-button {
+  color: #ffffff !important;
+}
+
+.email-top {
+  color: #172033 !important;
+}
+
+.email-top strong {
+  color: #172033 !important;
+}
+
+.email-body {
+  color: #000000 !important;
+}
+
+.email-body p {
+  color: #000000 !important;
+}
+
+.feedback {
+  color: #ffffff;
+}
+
+.feedback h2 {
+  color: #ffffff;
+}
+
+.feedback p,
+.feedback li {
+  color: #cbd5e1 !important;
+}
