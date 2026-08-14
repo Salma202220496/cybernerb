@@ -1,518 +1,568 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "./App.css";
 
-const scenarios = [
+const LEVELS = [
   {
-    id: 1,
-    type: "Phishing Email",
-    title: "Urgent University Account Verification",
-    sender: "university-security@verify-account.com",
-    subject: "URGENT: Your account will be suspended",
-    message:
-      "We detected unusual activity on your university account. You must verify your identity within 30 minutes to avoid account suspension.",
-    link: "Verify Your Account",
-    actions: [
-      "Inspect the sender",
-      "Click the link",
-      "Reply to the email",
-      "Report as phishing",
+    id: "beginner",
+    name: "Beginner",
+    code: "LVL_01",
+    icon: "🟢",
+    description: "Recognize Cyber Threats",
+    progress: 70,
+    scenarios: [
+      ["📧", "Phishing", "phishing", true],
+      ["🎭", "Social Engineering", "social", false],
+      ["🔐", "Account Security", "mfa", false],
     ],
-    correctAnswer: "Report as phishing",
-    hint: "Look carefully at the sender's email address. Does the domain look like the official university domain?",
-    explanation:
-      "The sender uses a suspicious domain and creates urgency to make you act without thinking.",
   },
-
   {
-    id: 2,
-    type: "Phishing Email",
-    title: "Your Student Scholarship Payment",
-    sender: "scholarship-office@payment-alert.net",
-    subject: "Action Required: Confirm your scholarship",
-    message:
-      "Your scholarship payment is currently on hold. Confirm your banking information immediately to receive your payment.",
-    link: "Confirm Payment",
-    actions: [
-      "Check the sender",
-      "Enter my banking information",
-      "Reply with my details",
-      "Report as suspicious",
+    id: "intermediate",
+    name: "Intermediate",
+    code: "LVL_02",
+    icon: "🟡",
+    description: "Investigate & Respond",
+    progress: 0,
+    scenarios: [
+      ["📱", "MFA Attacks", "mfa", false],
+      ["💻", "Malware", "phishing", false],
+      ["🌐", "Unsafe Wi-Fi", "social", false],
     ],
-    correctAnswer: "Report as suspicious",
-    hint: "Ask yourself why a scholarship office would request sensitive banking information through an unexpected email.",
-    explanation:
-      "Unexpected requests for financial information are a common phishing warning sign.",
   },
-
   {
-    id: 3,
-    type: "Phishing Email",
-    title: "Microsoft Account Security Alert",
-    sender: "security@microsoft-login-support.net",
-    subject: "Unusual sign-in detected",
-    message:
-      "Someone attempted to sign in to your account. If this was not you, verify your account immediately.",
-    link: "Secure My Account",
-    actions: [
-      "Inspect the link",
-      "Click the security link",
-      "Ignore the email",
-      "Report the email",
+    id: "advanced",
+    name: "Advanced",
+    code: "LVL_03",
+    icon: "🔴",
+    description: "Cyber Investigation",
+    progress: 0,
+    scenarios: [
+      ["🕵️", "Incident Investigation", "social", false],
+      ["🦠", "Ransomware", "phishing", false],
+      ["🎭", "Deepfake/Impersonation", "social", false],
     ],
-    correctAnswer: "Report the email",
-    hint: "Check whether the website domain actually belongs to the organization mentioned in the email.",
-    explanation:
-      "Attackers often imitate well-known companies using look-alike domains.",
   },
 ];
 
-function App() {
-  const [page, setPage] = useState("home");
+const SCENARIO_TYPES = [
+  {
+    id: "phishing",
+    name: "Phishing",
+    icon: "✉",
+    description: "Emails, fake websites, and login traps.",
+  },
+  {
+    id: "social",
+    name: "Social Engineering",
+    icon: "◉",
+    description: "Calls, chats, and authority pressure.",
+  },
+  {
+    id: "mfa",
+    name: "Security / MFA",
+    icon: "⌁",
+    description: "OTP theft and prompt-bombing attacks.",
+  },
+];
 
-  const [scenarioIndex, setScenarioIndex] = useState(0);
+const SCENARIOS = {
+  phishing: {
+    title: "Payroll access verification",
+    briefing:
+      "A message says your payroll account will be suspended unless you verify it immediately.",
+    sender: "Payroll Desk <payr0ll-alert@secure-mail.example>",
+    subject: "ACTION REQUIRED: profile expires today",
+    body: "Your employee access is scheduled for suspension. Confirm your password at the secure review portal within 30 minutes.",
+    hint: "Check the sender address, the urgent deadline, and the request for a password.",
+    flags: ["urgent deadline", "lookalike domain", "credential request"],
+    choices: [
+      ["report", "Report and delete the message", true],
+      ["open", "Open the verification portal", false],
+      ["reply", "Reply with your password", false],
+    ],
+  },
+  social: {
+    title: "The urgent IT call",
+    briefing:
+      "A caller claims to be from IT and asks for your recovery code to stop an account lock.",
+    conversation:
+      "CALLER: I can see a lockout attack in progress. Read me the code you just received so I can protect the account.",
+    hint: "Never share a recovery code with an unverified caller. Contact IT using an official number.",
+    flags: ["authority pressure", "one-time code request", "unverified caller"],
+    choices: [
+      [
+        "verify",
+        "End the call and contact IT using the official directory",
+        true,
+      ],
+      ["code", "Read the code to stop the attack", false],
+      ["manager", "Give the caller your manager's name first", false],
+    ],
+  },
+  mfa: {
+    title: "The verification flood",
+    briefing:
+      "Your phone receives repeated sign-in prompts while a chat message asks you to approve one to make them stop.",
+    conversation:
+      "SECURITY CHAT: Approve one prompt to cancel the repeated alerts. It is a routine security reset.",
+    hint: "Repeated prompts are a classic prompt-bombing signal. Deny them and report the incident.",
+    flags: ["prompt bombing", "social pressure", "unverified support chat"],
+    choices: [
+      [
+        "deny",
+        "Deny the prompts, report the incident, and contact support",
+        true,
+      ],
+      ["approve", "Approve one prompt to make the alerts stop", false],
+      ["ignore", "Ignore the prompts and keep trying later", false],
+    ],
+  },
+};
 
-  const [score, setScore] = useState(0);
-
-  const [answer, setAnswer] = useState(null);
-
-  const [hintUsed, setHintUsed] = useState(false);
-
-  const [mistakes, setMistakes] = useState([]);
-
-  const scenario = scenarios[scenarioIndex];
-
-  const startTraining = () => {
-    setPage("training");
-    setScenarioIndex(0);
-    setAnswer(null);
-    setHintUsed(false);
+function createScenario(type, level, attempt) {
+  return {
+    ...SCENARIOS[type],
+    id: `${type}-${level}-${attempt}`,
+    type,
+    level,
+    attempt,
   };
+}
 
-  const useHint = () => {
-    if (hintUsed) return;
-
-    setHintUsed(true);
-
-    setScore((currentScore) =>
-      Math.max(0, currentScore - 10)
-    );
-  };
-
-  const submitAnswer = (selectedAnswer) => {
-    setAnswer(selectedAnswer);
-
-    if (selectedAnswer === scenario.correctAnswer) {
-      setScore((currentScore) => currentScore + 100);
-    } else {
-      setMistakes((currentMistakes) => [
-        ...currentMistakes,
-        {
-          scenario: scenario.title,
-          answer: selectedAnswer,
-          correctAnswer: scenario.correctAnswer,
-        },
-      ]);
-    }
-  };
-
-  const nextScenario = () => {
-    const nextIndex =
-      (scenarioIndex + 1) % scenarios.length;
-
-    setScenarioIndex(nextIndex);
-    setAnswer(null);
-    setHintUsed(false);
-  };
-
-  const goHome = () => {
-    setPage("home");
-    setAnswer(null);
-    setHintUsed(false);
-  };
-
-  // =========================
-  // TRAINING PAGE
-  // =========================
-
-  if (page === "training") {
-    return (
-      <div className="app">
-
-        {/* TOP BAR */}
-        <nav className="navbar">
-
-          <div className="logo">
-            🛡️ CyberNerb
-          </div>
-
-          <div className="score-top">
-            ⭐ {score} Points
-          </div>
-
-        </nav>
-
-        <main className="scenario-container">
-
-          <button
-            className="back-button"
-            onClick={goHome}
-          >
-            ← Dashboard
-          </button>
-
-          {/* SCENARIO HEADER */}
-
-          <div className="scenario-header">
-
-            <span>📧</span>
-
-            <div>
-              <h1>{scenario.type}</h1>
-
-              <p>
-                AI Training Scenario
-              </p>
-            </div>
-
-          </div>
-
-          {/* SCENARIO */}
-
-          <div className="email-card">
-
-            <div className="email-top">
-
-              <div>
-                <strong>From:</strong>{" "}
-                {scenario.sender}
-              </div>
-
-              <div>
-                <strong>Subject:</strong>{" "}
-                {scenario.subject}
-              </div>
-
-            </div>
-
-            <div className="email-body">
-
-              <h3>
-                {scenario.title}
-              </h3>
-
-              <p>
-                Dear Student,
-              </p>
-
-              <p>
-                {scenario.message}
-              </p>
-
-              <button className="fake-link">
-                {scenario.link}
-              </button>
-
-              <p>
-                Thank you,
-                <br />
-                Security Team
-              </p>
-
-            </div>
-
-          </div>
-
-          {/* QUESTION */}
-
-          <div className="question-card">
-
-            <h2>
-              What would you do?
-            </h2>
-
-            <p>
-              Analyze the situation carefully before
-              making your decision.
-            </p>
-
-            {!answer && (
-              <div className="actions">
-
-                {scenario.actions.map(
-                  (action, index) => (
-                    <button
-                      key={index}
-                      className="action-button"
-                      onClick={() =>
-                        submitAnswer(action)
-                      }
-                    >
-                      {action}
-                    </button>
-                  )
-                )}
-
-              </div>
-            )}
-
-            {/* HINT */}
-
-            {!answer && (
-              <div className="hint-section">
-
-                {!hintUsed ? (
-                  <>
-                    <p>
-                      💡 Need help?
-                    </p>
-
-                    <button
-                      className="hint-button"
-                      onClick={useHint}
-                    >
-                      Show Hint −10 Points
-                    </button>
-                  </>
-                ) : (
-                  <div className="hint-box">
-
-                    💡 <strong>Hint:</strong>
-
-                    <p>
-                      {scenario.hint}
-                    </p>
-
-                  </div>
-                )}
-
-              </div>
-            )}
-
-            {/* FEEDBACK */}
-
-            {answer && (
-              <div className="feedback">
-
-                {answer ===
-                scenario.correctAnswer ? (
-                  <>
-                    <h2 className="correct">
-                      ✅ Correct!
-                    </h2>
-
-                    <p>
-                      Excellent decision. You
-                      identified the security threat.
-                    </p>
-
-                    <div className="points">
-                      +100 Points
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <h2 className="wrong">
-                      ❌ Not quite
-                    </h2>
-
-                    <p>
-                      Your decision could expose you
-                      to a cybersecurity attack.
-                    </p>
-
-                    <p>
-                      <strong>
-                        Why?
-                      </strong>{" "}
-                      {scenario.explanation}
-                    </p>
-
-                    <div className="points wrong-points">
-                      +0 Points
-                    </div>
-                  </>
-                )}
-
-                <button
-                  className="next-button"
-                  onClick={nextScenario}
-                >
-                  Next Scenario →
-                </button>
-
-              </div>
-            )}
-
-          </div>
-
-        </main>
-      </div>
-    );
-  }
-
-  // =========================
-  // HOME
-  // =========================
-
+function SectionTitle({ number, title, code }) {
   return (
-    <div className="app">
-
-      <nav className="navbar">
-
-        <div className="logo">
-          🛡️ CyberNerb
-        </div>
-
-        <div className="nav-text">
-          AI Cybersecurity Training
-        </div>
-
-      </nav>
-
-      <main className="home">
-
-        <section className="hero">
-
-          <div className="badge">
-            🤖 AI-Powered Cybersecurity Training
-          </div>
-
-          <h1>
-            Learn to Stay
-            <span> Cyber Safe.</span>
-          </h1>
-
-          <p>
-            Practice realistic cybersecurity
-            scenarios and improve your skills
-            through interactive training.
-          </p>
-
-        </section>
-
-        <section className="training">
-
-          <h2>
-            Training Scenarios
-          </h2>
-
-          <div className="cards">
-
-            <div className="card active">
-
-              <div className="icon">
-                📧
-              </div>
-
-              <h3>
-                Phishing Emails
-              </h3>
-
-              <p>
-                Identify suspicious senders,
-                fake links, urgent requests,
-                and phishing attempts.
-              </p>
-
-              <button
-                onClick={startTraining}
-              >
-                Start AI Training →
-              </button>
-
-            </div>
-
-            <div className="card">
-
-              <div className="icon">
-                🔐
-              </div>
-
-              <h3>
-                Password Security
-              </h3>
-
-              <p>
-                Learn how attackers target
-                weak passwords.
-              </p>
-
-              <span>
-                Coming Soon
-              </span>
-
-            </div>
-
-            <div className="card">
-
-              <div className="icon">
-                🎭
-              </div>
-
-              <h3>
-                Social Engineering
-              </h3>
-
-              <p>
-                Practice realistic social
-                engineering attacks.
-              </p>
-
-              <span>
-                Coming Soon
-              </span>
-
-            </div>
-
-          </div>
-
-        </section>
-
-        {/* PERFORMANCE */}
-
-        <section className="progress">
-
-          <div>
-            <h3>
-              Your Performance
-            </h3>
-
-            <p>
-              Your performance will be used
-              by AI to personalize future scenarios.
-            </p>
-          </div>
-
-          <div className="score">
-
-            <strong>
-              {score}
-            </strong>
-
-            <small>
-              Points
-            </small>
-
-          </div>
-
-          <div className="score">
-
-            <strong>
-              {mistakes.length}
-            </strong>
-
-            <small>
-              Mistakes
-            </small>
-
-          </div>
-
-        </section>
-
-      </main>
-
+    <div className="cq-section-title">
+      <div>
+        <div className="cq-eyebrow">{number} // TRAINING NODE</div>
+        <h2>{title}</h2>
+      </div>
+      <code>{code}</code>
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  const [selectedLevel, setSelectedLevel] = useState("beginner");
+  const [selectedType, setSelectedType] = useState("phishing");
+  const [scenario, setScenario] = useState(null);
+  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [hint, setHint] = useState("");
+  const [feedback, setFeedback] = useState(null);
+  const [points, setPoints] = useState(100);
+  const [attemptCount, setAttemptCount] = useState(0);
+  const [scores, setScores] = useState([]);
+  const [completedLevels, setCompletedLevels] = useState({
+    beginner: false,
+    intermediate: false,
+    advanced: false,
+  });
+
+  const unlockedLevels = useMemo(
+    () => ({
+      beginner: true,
+      intermediate: completedLevels.beginner,
+      advanced: completedLevels.intermediate,
+    }),
+    [completedLevels]
+  );
+
+  const averageScore = scores.length
+    ? Math.round(
+        scores.reduce((total, score) => total + score, 0) / scores.length
+      )
+    : 0;
+
+  const currentLevel = completedLevels.advanced
+    ? "advanced"
+    : completedLevels.intermediate
+      ? "advanced"
+      : completedLevels.beginner
+        ? "intermediate"
+        : "beginner";
+
+  function selectLevel(levelId) {
+    if (!unlockedLevels[levelId]) return;
+
+    setSelectedLevel(levelId);
+    setScenario(null);
+    setSelectedAnswer("");
+    setHint("");
+    setFeedback(null);
+  }
+
+  function selectScenarioType(typeId) {
+    setSelectedType(typeId);
+    setScenario(null);
+    setSelectedAnswer("");
+    setHint("");
+    setFeedback(null);
+  }
+
+  function startScenario() {
+    const nextAttempt = attemptCount + 1;
+
+    setAttemptCount(nextAttempt);
+    setScenario(createScenario(selectedType, selectedLevel, nextAttempt));
+    setSelectedAnswer("");
+    setHint("");
+    setFeedback(null);
+  }
+
+  function requestHint() {
+    if (!scenario || hint) return;
+
+    const hintCost = 10;
+    setPoints(currentPoints => Math.max(0, currentPoints - hintCost));
+    setHint(scenario.hint);
+  }
+
+  function submitAnswer() {
+    if (!scenario || !selectedAnswer) return;
+
+    const chosenOption = scenario.choices.find(
+      ([choiceId]) => choiceId === selectedAnswer
+    );
+    const passed = Boolean(chosenOption?.[2]);
+    const score = passed ? (hint ? 90 : 100) : 35;
+
+    setScores(oldScores => [...oldScores, score]);
+    setFeedback({ passed, score });
+
+    if (passed) {
+      setCompletedLevels(oldLevels => ({
+        ...oldLevels,
+        [selectedLevel]: true,
+      }));
+    }
+  }
+
+  return (
+    <div className="cq-app">
+      <div className="cq-noise" />
+
+      <header className="cq-header">
+        <div className="cq-brand">
+          <b>CQ</b>
+          <span>
+            CyberNerb
+            <small>AWARENESS TRAINING</small>
+          </span>
+        </div>
+
+        <div className="cq-player-status">
+          <div>
+            <small>PLAYER LEVEL</small>
+            <strong>{selectedLevel.toUpperCase()}</strong>
+          </div>
+          <div>
+            <small>POINTS</small>
+            <strong className="points-value">{points}</strong>
+          </div>
+          <div className="system-status">
+            <i /> SYSTEM ONLINE
+          </div>
+        </div>
+      </header>
+
+      <main className="cq-container">
+        <section className="cq-hero">
+          <div className="cq-eyebrow">/// THREAT AWARENESS PROTOCOL</div>
+          <h1>
+            Train your instincts.
+            <br />
+            <em>Break the attack chain.</em>
+          </h1>
+          <p>Realistic simulations. Adaptive difficulty. No safe mode.</p>
+          <div className="cq-meta">
+            <span>⚡ SCENARIO ENGINE</span>
+            <span>◈ PERFORMANCE COACH</span>
+            <span>◌ ZERO TRUST BY DESIGN</span>
+          </div>
+        </section>
+
+        <section className="cq-telemetry">
+          <div className="cq-telemetry-title">
+            PLAYER TELEMETRY <span>● REC</span>
+          </div>
+          <div className="cq-stats">
+            <div>
+              <small>AVERAGE SCORE</small>
+              <strong>
+                {averageScore || "--"}
+                <i>/100</i>
+              </strong>
+            </div>
+            <div>
+              <small>RUNS LOGGED</small>
+              <strong>{String(attemptCount).padStart(2, "0")}</strong>
+            </div>
+            <div>
+              <small>CURRENT NODE</small>
+              <strong className="cyan">{currentLevel.toUpperCase()}</strong>
+            </div>
+          </div>
+          <div className="cq-progress-line">
+            <span>THREAT READINESS</span>
+            <span>{averageScore}%</span>
+          </div>
+          <div className="cq-progress">
+            <b style={{ width: `${averageScore}%` }} />
+          </div>
+        </section>
+
+        <SectionTitle
+          number="01"
+          title="Choose your access level"
+          code={`ACTIVE // ${selectedLevel.toUpperCase()}`}
+        />
+
+        <section className="cq-level-grid">
+          {LEVELS.map(level => {
+            const isUnlocked = unlockedLevels[level.id];
+            const isCompleted = completedLevels[level.id];
+
+            return (
+              <article
+                key={level.id}
+                className={`cq-level-dashboard ${selectedLevel === level.id ? "selected" : ""} ${!isUnlocked ? "locked" : ""}`}
+              >
+                <button
+                  className="cq-level-heading"
+                  onClick={() => selectLevel(level.id)}
+                  disabled={!isUnlocked}
+                >
+                  <div className="cq-level-name">
+                    <span className="cq-level-icon">{level.icon}</span>
+                    <span>{level.name.toUpperCase()}</span>
+                  </div>
+                  <span className="cq-level-lock">
+                    {isUnlocked ? "" : "🔒"}
+                    {isCompleted ? "✓" : ""}
+                  </span>
+                </button>
+
+                <p className="cq-level-description">{level.description}</p>
+
+                <div className="cq-scenario-list">
+                  {level.scenarios.map(([icon, name, type, available]) => (
+                    <button
+                      key={name}
+                      className={`cq-scenario-row ${available && isUnlocked ? "available" : "scenario-locked"}`}
+                      disabled={!isUnlocked || !available}
+                      onClick={() => {
+                        setSelectedType(type);
+                        setSelectedLevel(level.id);
+                        setScenario(null);
+                        setFeedback(null);
+                        setHint("");
+                      }}
+                    >
+                      <span>{icon}</span>
+                      <strong>{name}</strong>
+                      <span>{available && isUnlocked ? "✅" : "🔒"}</span>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="cq-level-progress-label">
+                  <span>Progress</span>
+                  <span>
+                    {isUnlocked
+                      ? `${level.progress}%`
+                      : "Complete previous level"}
+                  </span>
+                </div>
+                <div className="cq-level-progress">
+                  <b style={{ width: `${isUnlocked ? level.progress : 0}%` }} />
+                </div>
+
+                {level.id === "beginner" && isUnlocked ? (
+                  <button
+                    className="cq-continue-button"
+                    onClick={startScenario}
+                  >
+                    Continue Beginner <span>→</span>
+                  </button>
+                ) : !isUnlocked ? (
+                  <div className="cq-unlock-message">
+                    Complete{" "}
+                    {level.id === "intermediate" ? "Beginner" : "Intermediate"}{" "}
+                    to unlock
+                  </div>
+                ) : null}
+              </article>
+            );
+          })}
+        </section>
+
+        <SectionTitle
+          number="02"
+          title={`${selectedLevel} scenarios`}
+          code="SELECT ATTACK SURFACE"
+        />
+
+        <section className="cq-type-grid">
+          {SCENARIO_TYPES.map(scenarioType => (
+            <button
+              key={scenarioType.id}
+              className={`cq-type ${selectedType === scenarioType.id ? "active" : ""}`}
+              onClick={() => selectScenarioType(scenarioType.id)}
+            >
+              <b>{scenarioType.icon}</b>
+              <span>
+                <strong>{scenarioType.name}</strong>
+                <small>{scenarioType.description}</small>
+              </span>
+              <i>→</i>
+            </button>
+          ))}
+        </section>
+
+        <section className="cq-simulator">
+          <div className="cq-sim-header">
+            <div>
+              <div className="cq-eyebrow">03 // LIVE SIMULATION</div>
+              <h2>{scenario ? scenario.title : "Ready when you are."}</h2>
+            </div>
+            <span>{scenario ? "SCENARIO LOADED" : "AWAITING INPUT"}</span>
+          </div>
+
+          {!scenario ? (
+            <div className="cq-launch">
+              <div className="cq-launch-art">
+                <b>+</b>
+                <code>
+                  SCENARIO_GENERATOR
+                  <br />
+                  <span>
+                    TYPE: {selectedType.toUpperCase()}
+                    <br />
+                    LEVEL: {selectedLevel.toUpperCase()}
+                    <br />
+                    MODE: ADAPTIVE
+                  </span>
+                </code>
+              </div>
+
+              <div>
+                <h3>Enter the simulation layer.</h3>
+                <p>
+                  Choose an attack surface above, then test your instincts in a
+                  realistic training scenario.
+                </p>
+                <button className="cq-primary" onClick={startScenario}>
+                  INITIALIZE SCENARIO →
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="cq-play">
+              <div className="cq-scenario">
+                <div className="cq-tag">
+                  {selectedType.toUpperCase()} // {selectedLevel.toUpperCase()}
+                </div>
+                <p>{scenario.briefing}</p>
+
+                {selectedType === "phishing" ? (
+                  <div className="cq-mail">
+                    <div className="cq-mail-top">
+                      ✉ MAIL // INBOX <span>•••</span>
+                    </div>
+                    <div className="cq-mail-meta">
+                      <small>FROM</small>
+                      <b>{scenario.sender}</b>
+                      <small>SUBJECT</small>
+                      <b>{scenario.subject}</b>
+                    </div>
+                    <div className="cq-mail-body">{scenario.body}</div>
+                    <div className="cq-login">
+                      <strong>NORTHSTAR</strong>
+                      <small>WORKSPACE</small>
+                      <input placeholder="employee@northstar.example" />
+                      <input placeholder="Password" type="password" />
+                      <button>CONTINUE</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="cq-dialogue">{scenario.conversation}</div>
+                )}
+              </div>
+
+              <div className="cq-choices">
+                <label>SELECT YOUR RESPONSE</label>
+                {scenario.choices.map(([id, label], index) => (
+                  <button
+                    key={id}
+                    className={selectedAnswer === id ? "chosen" : ""}
+                    onClick={() => setSelectedAnswer(id)}
+                  >
+                    <b>{String.fromCharCode(65 + index)}</b>
+                    {label}
+                    {selectedAnswer === id && <span>✓</span>}
+                  </button>
+                ))}
+                <button
+                  className="cq-primary"
+                  disabled={!selectedAnswer}
+                  onClick={submitAnswer}
+                >
+                  SUBMIT RESPONSE →
+                </button>
+              </div>
+            </div>
+          )}
+
+          {scenario && !feedback && (
+            <div className="cq-hint-area">
+              <button
+                className="cq-hint-button"
+                onClick={requestHint}
+                disabled={Boolean(hint)}
+              >
+                {hint
+                  ? "HINT USED -10 POINTS"
+                  : "ASK CYBERNERB FOR A HINT (-10 POINTS)"}
+              </button>
+              {hint && (
+                <div className="cq-cybernerb-message">
+                  <strong>CyberNerb</strong>
+                  <p>{hint}</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {feedback && (
+            <div
+              className={`cq-result ${feedback.passed ? "success" : "fail"}`}
+            >
+              <div className="cq-cybernerb-label">
+                CyberNerb // PERFORMANCE FEEDBACK
+              </div>
+              <strong>
+                {feedback.passed ? "✓ SIGNAL VERIFIED" : "⚠ SIGNAL MISSED"}
+              </strong>
+              <h3>
+                {feedback.passed
+                  ? "Node cleared. The next level is unlocked."
+                  : "Stay in this node and try a new scenario."}
+              </h3>
+              <p>
+                {feedback.passed
+                  ? `Good decision. Watch for ${scenario.flags.join(", ")}.`
+                  : `Review the warning signs: ${scenario.flags.join(", ")}. Slow down and verify before you act.`}
+              </p>
+              <button onClick={startScenario}>
+                {feedback.passed ? " NEXT " : "RETRY "} ↻
+              </button>
+            </div>
+          )}
+        </section>
+
+        <footer className="cq-footer">
+        
+          <span>© CyberNerb SYSTEMS</span>
+        </footer>
+      </main>
+    </div>
+  );
+}
