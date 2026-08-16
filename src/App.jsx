@@ -118,6 +118,51 @@ const SCENARIOS = {
   },
 };
 
+const inboxEmails = [
+  {
+    id: 1,
+    senderName: "IT Service Desk",
+    sender: "support@university-helpdesk.com",
+    subject: "URGENT: Verify Your University Account",
+    preview: "We detected unusual activity on your account...",
+    time: "10:42 AM",
+    suspicious: true,
+  },
+  {
+    id: 2,
+    senderName: "Dr. Sarah Ahmed",
+    sender: "s.ahmed@university.edu",
+    subject: "Tomorrow's Lecture Materials",
+    preview: "Hi everyone, I uploaded the lecture slides...",
+    time: "9:18 AM",
+    suspicious: false,
+    hasSafeLink: true,
+    safeLinkText: "Open Lecture Materials",
+  },
+  {
+    id: 3,
+    senderName: "University Library",
+    sender: "library@university.edu",
+    subject: "Book Return Reminder",
+    preview: "This is a reminder that your borrowed book is due soon.",
+    time: "8:35 AM",
+    suspicious: false,
+    hasAttachment: true,
+    attachmentText: "View Return Notice",
+  },
+  {
+    id: 4,
+    senderName: "Student Finance",
+    sender: "finance@university.edu",
+    subject: "Tuition Payment Receipt",
+    preview: "Your recent tuition payment has been processed successfully.",
+    time: "7:50 AM",
+    suspicious: false,
+    hasReceipt: true,
+    receiptText: "Open Payment Receipt",
+  },
+];
+
 function createScenario(type, level, attempt) {
   return {
     ...SCENARIOS[type],
@@ -155,6 +200,11 @@ export default function App() {
     intermediate: false,
     advanced: false,
   });
+  const [page, setPage] = useState("home");
+  const [selectedEmail, setSelectedEmail] = useState(null);
+  const [completedEmailIds, setCompletedEmailIds] = useState([]);
+  const [emailHintUsed, setEmailHintUsed] = useState(false);
+  const [emailHint, setEmailHint] = useState("");
 
   const unlockedLevels = useMemo(
     () => ({
@@ -183,6 +233,9 @@ export default function App() {
     if (!unlockedLevels[levelId]) return;
 
     setSelectedLevel(levelId);
+    if (levelId === "beginner") {
+      setPage("inbox");
+    }
     setScenario(null);
     setSelectedAnswer("");
     setHint("");
@@ -207,6 +260,49 @@ export default function App() {
     setFeedback(null);
   }
 
+  function openInbox() {
+    setPage("inbox");
+    setScenario(null);
+    setFeedback(null);
+  }
+
+  function openEmail(email) {
+    setSelectedEmail(email);
+    setEmailHintUsed(false);
+    setEmailHint("");
+    setPage("email");
+  }
+
+  function useEmailHint() {
+    if (!selectedEmail || emailHintUsed) return;
+
+    if (points < 10) {
+      setEmailHint("You need at least 10 points to use a hint.");
+      return;
+    }
+
+    setPoints(currentPoints => currentPoints - 10);
+    setEmailHintUsed(true);
+
+    const hints = {
+      1: "Check the sender domain carefully. Does university-helpdesk.com really belong to the university?",
+      2: "Check whether the lecturer uses the official university.edu domain before opening the materials.",
+      3: "Check the Library sender domain before trusting the return notice.",
+      4: "Check whether Student Finance uses the official university.edu domain.",
+    };
+
+    setEmailHint(hints[selectedEmail.id]);
+  }
+
+  function completeEmail(email, resultPage) {
+    if (!completedEmailIds.includes(email.id)) {
+      setPoints(currentPoints => currentPoints + 50);
+      setCompletedEmailIds(currentIds => [...currentIds, email.id]);
+    }
+
+    setPage(resultPage);
+  }
+
   function requestHint() {
     if (!scenario || hint) return;
 
@@ -222,9 +318,14 @@ export default function App() {
       ([choiceId]) => choiceId === selectedAnswer
     );
     const passed = Boolean(chosenOption?.[2]);
-    const score = passed ? (hint ? 90 : 100) : 35;
+    const score = passed ? 100 : 35;
 
     setScores(oldScores => [...oldScores, score]);
+
+    if (passed) {
+      setPoints(currentPoints => currentPoints + 50);
+    }
+
     setFeedback({ passed, score });
 
     if (passed) {
@@ -233,6 +334,293 @@ export default function App() {
         [selectedLevel]: true,
       }));
     }
+  }
+
+  if (page === "inbox") {
+    return (
+      <div className="cq-app">
+        <header className="cq-header">
+          <div className="cq-brand">
+            <b>🛡️</b>
+            <span>
+              CyberNerb<small>CYBERSECURITY TRAINING</small>
+            </span>
+          </div>
+          <div className="cq-player-status">
+            <div>
+              <small>POINTS</small>
+              <strong className="points-value">⭐ {points}</strong>
+            </div>
+            <div className="system-status">
+              <i /> SYSTEM ONLINE
+            </div>
+          </div>
+        </header>
+        <main className="cq-container cq-email-page">
+          <button className="cq-back-button" onClick={() => setPage("home")}>
+            ← Dashboard
+          </button>
+          <div className="cq-email-page-heading">
+            <span>📥</span>
+            <div>
+              <h1>Inbox ({inboxEmails.length})</h1>
+              <p>Select an email to inspect</p>
+            </div>
+          </div>
+          <div className="cq-inbox-list">
+            {inboxEmails.map(email => (
+              <button
+                className="cq-inbox-row"
+                key={email.id}
+                onClick={() => openEmail(email)}
+              >
+                <span className="cq-email-avatar">
+                  {email.senderName.charAt(0)}
+                </span>
+                <span className="cq-inbox-copy">
+                  <strong>{email.senderName}</strong>
+                  <small>{email.sender}</small>
+                  <b>{email.subject}</b>
+                  <em>{email.preview}</em>
+                </span>
+                <span className="cq-inbox-time">
+                  {email.time}
+                  <br />
+                  {completedEmailIds.includes(email.id) ? "✅" : "›"}
+                </span>
+              </button>
+            ))}
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (page === "email" && selectedEmail) {
+    return (
+      <div className="cq-app">
+        <header className="cq-header">
+          <div className="cq-brand">
+            <b>🛡️</b>
+            <span>
+              CyberNerb<small>CYBERSECURITY TRAINING</small>
+            </span>
+          </div>
+          <div className="cq-player-status">
+            <div>
+              <small>POINTS</small>
+              <strong className="points-value">⭐ {points}</strong>
+            </div>
+            <div className="system-status">
+              <i /> SYSTEM ONLINE
+            </div>
+          </div>
+        </header>
+        <main className="cq-container cq-email-page">
+          <button className="cq-back-button" onClick={() => setPage("inbox")}>
+            ← Inbox
+          </button>
+          <article className="cq-email-view">
+            <div className="cq-email-view-header">
+              <div className="cq-eyebrow">EMAIL INVESTIGATION // BEGINNER</div>
+              <h1>{selectedEmail.subject}</h1>
+              <div className="cq-email-sender">
+                <strong>{selectedEmail.senderName}</strong>
+                <span>{selectedEmail.sender}</span>
+                <small>{selectedEmail.time}</small>
+              </div>
+            </div>
+            <div className="cq-email-hint-section">
+              <button
+                className="cq-hint-button"
+                disabled={emailHintUsed}
+                onClick={useEmailHint}
+              >
+                {emailHintUsed ? "HINT USED -10 POINTS" : "💡 HINT -10 POINTS"}
+              </button>
+              {emailHint && (
+                <div className="cq-cybernerb-message">
+                  <strong>CyberNerb</strong>
+                  <p>{emailHint}</p>
+                </div>
+              )}
+            </div>
+            <div className="cq-email-message">
+              {selectedEmail.suspicious ? (
+                <>
+                  <p>Dear Student,</p>
+                  <p>
+                    We detected unusual activity on your university account.
+                  </p>
+                  <p>
+                    To prevent your account from being suspended, verify your
+                    identity immediately.
+                  </p>
+                  <button
+                    className="cq-phishing-link"
+                    onClick={() => setPage("fake-site")}
+                  >
+                    Verify Your Account
+                  </button>
+                  <button
+                    className="cq-report-button"
+                    onClick={() => completeEmail(selectedEmail, "safe-result")}
+                  >
+                    🚩 Report Phishing
+                  </button>
+                  <p className="cq-email-signature">
+                    Thank you,
+                    <br />
+                    IT Service Desk
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p>Hello,</p>
+                  <p>{selectedEmail.preview}</p>
+                  {selectedEmail.hasSafeLink && (
+                    <button
+                      className="cq-safe-link-button"
+                      onClick={() => setPage("lecture-materials")}
+                    >
+                      📚 {selectedEmail.safeLinkText}
+                    </button>
+                  )}
+                  {selectedEmail.hasAttachment && (
+                    <button
+                      className="cq-safe-link-button"
+                      onClick={() => setPage("library-notice")}
+                    >
+                      📎 {selectedEmail.attachmentText}
+                    </button>
+                  )}
+                  {selectedEmail.hasReceipt && (
+                    <button
+                      className="cq-safe-link-button"
+                      onClick={() => setPage("payment-receipt")}
+                    >
+                      💳 {selectedEmail.receiptText}
+                    </button>
+                  )}
+                  <button
+                    className="cq-safe-action-button"
+                    onClick={() =>
+                      completeEmail(selectedEmail, "safe-email-result")
+                    }
+                  >
+                    ✅ Mark as Safe
+                  </button>
+                  <button
+                    className="cq-report-button"
+                    onClick={() => setPage("wrong-report-result")}
+                  >
+                    🚩 Report as Phishing
+                  </button>
+                </>
+              )}
+            </div>
+          </article>
+        </main>
+      </div>
+    );
+  }
+
+  if (
+    [
+      "safe-result",
+      "safe-email-result",
+      "wrong-report-result",
+      "fake-site",
+      "lecture-materials",
+      "library-notice",
+      "payment-receipt",
+    ].includes(page)
+  ) {
+    const resultContent = {
+      "safe-result": {
+        icon: "✅",
+        title: "Phishing reported successfully",
+        text: "Excellent decision. You recognized the suspicious sender and stopped a credential-harvesting attempt.",
+        tone: "success",
+      },
+      "safe-email-result": {
+        icon: "✅",
+        title: "Email marked as safe",
+        text: "Good verification. The sender uses the official university domain and the message does not request sensitive information.",
+        tone: "success",
+      },
+      "wrong-report-result": {
+        icon: "⚠️",
+        title: "That message was legitimate",
+        text: "Reporting a safe message can interrupt useful communication. Check the sender domain, context, and request before deciding.",
+        tone: "warning",
+      },
+      "fake-site": {
+        icon: "🚨",
+        title: "Credential trap detected",
+        text: "This simulated page was designed to harvest your university password. Never enter credentials after following an urgent email link.",
+        tone: "danger",
+      },
+      "lecture-materials": {
+        icon: "📚",
+        title: "Lecture materials opened",
+        text: "The link points to the official university.edu domain and is safe to continue.",
+        tone: "success",
+      },
+      "library-notice": {
+        icon: "📎",
+        title: "Library notice opened",
+        text: "This attachment belongs to the trusted University Library message. Always confirm the sender before opening files.",
+        tone: "success",
+      },
+      "payment-receipt": {
+        icon: "💳",
+        title: "Payment receipt opened",
+        text: "The receipt is associated with the official Student Finance address. Continue to verify unexpected payment requests.",
+        tone: "success",
+      },
+    }[page];
+
+    return (
+      <div className="cq-app">
+        <header className="cq-header">
+          <div className="cq-brand">
+            <b>🛡️</b>
+            <span>
+              CyberNerb<small>CYBERSECURITY TRAINING</small>
+            </span>
+          </div>
+          <div className="cq-player-status">
+            <div>
+              <small>POINTS</small>
+              <strong className="points-value">⭐ {points}</strong>
+            </div>
+            <div className="system-status">
+              <i /> SYSTEM ONLINE
+            </div>
+          </div>
+        </header>
+        <main className="cq-container cq-email-page">
+          <div className={`cq-email-result-card ${resultContent.tone}`}>
+            <div className="cq-result-icon">{resultContent.icon}</div>
+            <div className="cq-eyebrow">CyberNerb // EMAIL COACH</div>
+            <h1>{resultContent.title}</h1>
+            <p>{resultContent.text}</p>
+            <div className="cq-email-result-actions">
+              <button className="cq-primary" onClick={() => setPage("inbox")}>
+                ← Back to Inbox
+              </button>
+              <button
+                className="cq-back-button"
+                onClick={() => setPage("home")}
+              >
+                Dashboard
+              </button>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
   }
 
   return (
@@ -449,7 +837,7 @@ export default function App() {
                   Choose an attack surface above, then test your instincts in a
                   realistic training scenario.
                 </p>
-                <button className="cq-primary" onClick={startScenario}>
+                <button className="cq-continue-button" onClick={openInbox}>
                   INITIALIZE SCENARIO →
                 </button>
               </div>
@@ -552,17 +940,29 @@ export default function App() {
                   : `Review the warning signs: ${scenario.flags.join(", ")}. Slow down and verify before you act.`}
               </p>
               <button onClick={startScenario}>
-                {feedback.passed ? " NEXT " : "RETRY "} ↻
+                {feedback.passed ? "RUN NEXT VARIANT" : "RETRY NODE"} ↻
               </button>
             </div>
           )}
         </section>
 
+  
+
         <footer className="cq-footer">
-        
-          <span>© CyberNerb SYSTEMS</span>
+
+          <span>
+            © CyberNerb SYSTEMS
+          </span>
+
+          <span>
+            ADAPTIVE TRAINING ENGINE 
+          
+          </span>
+
         </footer>
+
       </main>
+
     </div>
   );
 }
