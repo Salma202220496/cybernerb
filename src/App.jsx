@@ -893,6 +893,7 @@ if (page === "lecture-materials") {
   placeholder="student@university.edu"
   value={fakeEmail}
   onChange={(e) => setFakeEmail(e.target.value)}
+  autoComplete="off"
 />
 
             <label>
