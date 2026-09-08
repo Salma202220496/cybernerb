@@ -251,6 +251,57 @@ h1 em {
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
+.cq-scenario-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid var(--line);
+  background: rgba(13, 18, 21, 0.9);
+  padding: 18px;
+  min-height: 210px;
+}
+.card .icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--cyan);
+  background: rgba(0, 239, 255, 0.06);
+  font-size: 22px;
+}
+.card h3 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+.card p {
+  margin: 0;
+  color: #9aa7ac;
+  line-height: 1.5;
+  font-size: 13px;
+}
+.card span {
+  margin-top: auto;
+  color: var(--cyan);
+  font: 10px "Space Mono";
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.card button {
+  border: 0;
+  background: var(--cyan);
+  color: #041316;
+  padding: 10px 12px;
+  font: 10px "Space Mono";
+  cursor: pointer;
+}
 .cq-level,
 .cq-type {
   border: 1px solid var(--line);

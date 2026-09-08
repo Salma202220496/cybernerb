@@ -1,6 +1,12 @@
 import { useMemo, useState } from "react";
 import "./App.css";
 
+const heroMetaStyle = {
+  fontSize: "clamp(0.82rem, 1.25vw, 1rem)",
+  fontWeight: 700,
+  letterSpacing: "0.08em",
+};
+
 const LEVELS = [
   {
     id: "beginner",
@@ -10,9 +16,9 @@ const LEVELS = [
     description: "Recognize Cyber Threats",
     progress: 70,
     scenarios: [
-      ["📧", "Phishing", "phishing", true],
+      ["📧", "Phishing Email", "phishing", true],
+      ["🔗", "Suspicious Links", "mfa", false],
       ["🎭", "Social Engineering", "social", false],
-      ["🔐", "Account Security", "mfa", false],
     ],
   },
   {
@@ -42,81 +48,6 @@ const LEVELS = [
     ],
   },
 ];
-
-const SCENARIO_TYPES = [
-  {
-    id: "phishing",
-    name: "Phishing",
-    icon: "✉",
-    description: "Emails, fake websites, and login traps.",
-  },
-  {
-    id: "social",
-    name: "Social Engineering",
-    icon: "◉",
-    description: "Calls, chats, and authority pressure.",
-  },
-  {
-    id: "mfa",
-    name: "Security / MFA",
-    icon: "⌁",
-    description: "OTP theft and prompt-bombing attacks.",
-  },
-];
-
-const SCENARIOS = {
-  phishing: {
-    title: "Payroll access verification",
-    briefing:
-      "A message says your payroll account will be suspended unless you verify it immediately.",
-    sender: "Payroll Desk <payr0ll-alert@secure-mail.example>",
-    subject: "ACTION REQUIRED: profile expires today",
-    body: "Your employee access is scheduled for suspension. Confirm your password at the secure review portal within 30 minutes.",
-    hint: "Check the sender address, the urgent deadline, and the request for a password.",
-    flags: ["urgent deadline", "lookalike domain", "credential request"],
-    choices: [
-      ["report", "Report and delete the message", true],
-      ["open", "Open the verification portal", false],
-      ["reply", "Reply with your password", false],
-    ],
-  },
-  social: {
-    title: "The urgent IT call",
-    briefing:
-      "A caller claims to be from IT and asks for your recovery code to stop an account lock.",
-    conversation:
-      "CALLER: I can see a lockout attack in progress. Read me the code you just received so I can protect the account.",
-    hint: "Never share a recovery code with an unverified caller. Contact IT using an official number.",
-    flags: ["authority pressure", "one-time code request", "unverified caller"],
-    choices: [
-      [
-        "verify",
-        "End the call and contact IT using the official directory",
-        true,
-      ],
-      ["code", "Read the code to stop the attack", false],
-      ["manager", "Give the caller your manager's name first", false],
-    ],
-  },
-  mfa: {
-    title: "The verification flood",
-    briefing:
-      "Your phone receives repeated sign-in prompts while a chat message asks you to approve one to make them stop.",
-    conversation:
-      "SECURITY CHAT: Approve one prompt to cancel the repeated alerts. It is a routine security reset.",
-    hint: "Repeated prompts are a classic prompt-bombing signal. Deny them and report the incident.",
-    flags: ["prompt bombing", "social pressure", "unverified support chat"],
-    choices: [
-      [
-        "deny",
-        "Deny the prompts, report the incident, and contact support",
-        true,
-      ],
-      ["approve", "Approve one prompt to make the alerts stop", false],
-      ["ignore", "Ignore the prompts and keep trying later", false],
-    ],
-  },
-};
 
 const inboxEmails = [
   {
@@ -163,16 +94,6 @@ const inboxEmails = [
   },
 ];
 
-function createScenario(type, level, attempt) {
-  return {
-    ...SCENARIOS[type],
-    id: `${type}-${level}-${attempt}`,
-    type,
-    level,
-    attempt,
-  };
-}
-
 function SectionTitle({ number, title, code }) {
   return (
     <div className="cq-section-title">
@@ -186,12 +107,7 @@ function SectionTitle({ number, title, code }) {
 }
 
 export default function App() {
-  const [selectedLevel, setSelectedLevel] = useState("beginner");
-  const [selectedType, setSelectedType] = useState("phishing");
-  const [scenario, setScenario] = useState(null);
-  const [selectedAnswer, setSelectedAnswer] = useState("");
-  const [hint, setHint] = useState("");
-  const [feedback, setFeedback] = useState(null);
+  const [selectedLevel, setSelectedLevel] = useState(null);
   const [points, setPoints] = useState(100);
   const [attemptCount, setAttemptCount] = useState(0);
   const [scores, setScores] = useState([]);
@@ -233,37 +149,18 @@ export default function App() {
     if (!unlockedLevels[levelId]) return;
 
     setSelectedLevel(levelId);
-    if (levelId === "beginner") {
-      setPage("inbox");
-    }
-    setScenario(null);
-    setSelectedAnswer("");
-    setHint("");
-    setFeedback(null);
   }
 
-  function selectScenarioType(typeId) {
-    setSelectedType(typeId);
-    setScenario(null);
-    setSelectedAnswer("");
-    setHint("");
-    setFeedback(null);
-  }
+  function enterLevel(levelId) {
+    if (!unlockedLevels[levelId]) return;
 
-  function startScenario() {
-    const nextAttempt = attemptCount + 1;
-
-    setAttemptCount(nextAttempt);
-    setScenario(createScenario(selectedType, selectedLevel, nextAttempt));
-    setSelectedAnswer("");
-    setHint("");
-    setFeedback(null);
+    setSelectedLevel(levelId);
+    setPage("scenarios");
   }
 
   function openInbox() {
+    setAttemptCount(currentAttempts => currentAttempts + 1);
     setPage("inbox");
-    setScenario(null);
-    setFeedback(null);
   }
 
   function openEmail(email) {
@@ -297,43 +194,85 @@ export default function App() {
   function completeEmail(email, resultPage) {
     if (!completedEmailIds.includes(email.id)) {
       setPoints(currentPoints => currentPoints + 50);
+      setScores(oldScores => [...oldScores, 100]);
+      setCompletedLevels(oldLevels => ({ ...oldLevels, beginner: true }));
       setCompletedEmailIds(currentIds => [...currentIds, email.id]);
     }
 
     setPage(resultPage);
   }
 
-  function requestHint() {
-    if (!scenario || hint) return;
 
-    const hintCost = 10;
-    setPoints(currentPoints => Math.max(0, currentPoints - hintCost));
-    setHint(scenario.hint);
-  }
+  if (page === "scenarios") {
+    const beginnerScenarios = LEVELS.find(level => level.id === selectedLevel)?.scenarios || [];
 
-  function submitAnswer() {
-    if (!scenario || !selectedAnswer) return;
-
-    const chosenOption = scenario.choices.find(
-      ([choiceId]) => choiceId === selectedAnswer
+    return (
+      <div className="cq-app">
+        <div className="cq-noise" />
+        <header className="cq-header">
+          <div className="cq-brand">
+            <b>CQ</b>
+            <span>
+              CyberNerb
+              <small>AWARENESS TRAINING</small>
+            </span>
+          </div>
+          <div className="cq-player-status">
+            <div>
+              <small>PLAYER LEVEL</small>
+              <strong>{selectedLevel?.toUpperCase()}</strong>
+            </div>
+            <div>
+              <small>POINTS</small>
+              <strong className="points-value">{points}</strong>
+            </div>
+            <div className="system-status">
+              <i /> SYSTEM ONLINE
+            </div>
+          </div>
+        </header>
+        <main className="cq-container cq-scenario-page">
+          <button
+            className="cq-back-button"
+            onClick={() => {
+              setSelectedLevel(null);
+              setPage("home");
+            }}
+          >
+            ← Back to Levels
+          </button>
+          <section className="cq-scenario-landing">
+            <div className="cq-eyebrow">BEGINNER // TRAINING NODE</div>
+            <h1>Scenario</h1>
+            <p>Start with a cybersecurity challenge and practice how to respond safely.</p>
+          </section>
+          <section className="cq-type-grid cq-video-scenario-grid">
+            {beginnerScenarios.map(([icon, name, type, available]) => (
+              <article className={`cq-type cq-video-scenario-card ${available ? "active" : "locked"}`} key={name}>
+                <b>{icon}</b>
+                <span>
+                  <strong>{name}</strong>
+                  <small>
+                    {type === "phishing"
+                      ? "Investigate realistic emails, identify warning signs, and make the safest decision."
+                      : type === "mfa"
+                        ? "Learn how suspicious links can lead to credential theft."
+                        : "Recognize manipulation techniques used by attackers."}
+                  </small>
+                </span>
+                {available ? (
+                  <button className="cq-continue-button" onClick={openInbox}>
+                    Start Scenario →
+                  </button>
+                ) : (
+                  <em>Coming Soon</em>
+                )}
+              </article>
+            ))}
+          </section>
+        </main>
+      </div>
     );
-    const passed = Boolean(chosenOption?.[2]);
-    const score = passed ? 100 : 35;
-
-    setScores(oldScores => [...oldScores, score]);
-
-    if (passed) {
-      setPoints(currentPoints => currentPoints + 50);
-    }
-
-    setFeedback({ passed, score });
-
-    if (passed) {
-      setCompletedLevels(oldLevels => ({
-        ...oldLevels,
-        [selectedLevel]: true,
-      }));
-    }
   }
 
   if (page === "inbox") {
@@ -637,9 +576,12 @@ export default function App() {
         </div>
 
         <div className="cq-player-status">
+          <button className="cq-header-inbox-button cq-primary" onClick={openInbox}>
+            📥 INBOX
+          </button>
           <div>
             <small>PLAYER LEVEL</small>
-            <strong>{selectedLevel.toUpperCase()}</strong>
+            <strong>{selectedLevel ? selectedLevel.toUpperCase() : "SELECT LEVEL"}</strong>
           </div>
           <div>
             <small>POINTS</small>
@@ -653,14 +595,13 @@ export default function App() {
 
       <main className="cq-container">
         <section className="cq-hero">
-          <div className="cq-eyebrow">/// THREAT AWARENESS PROTOCOL</div>
           <h1>
             Train your instincts.
             <br />
             <em>Break the attack chain.</em>
           </h1>
-          <p>Realistic simulations. Adaptive difficulty. No safe mode.</p>
-          <div className="cq-meta">
+          <p>Realistic simulations. Adaptive difficulty.</p>
+          <div className="cq-meta cq-meta-large" style={heroMetaStyle}>
             <span>⚡ SCENARIO ENGINE</span>
             <span>◈ PERFORMANCE COACH</span>
             <span>◌ ZERO TRUST BY DESIGN</span>
@@ -700,7 +641,7 @@ export default function App() {
         <SectionTitle
           number="01"
           title="Choose your access level"
-          code={`ACTIVE // ${selectedLevel.toUpperCase()}`}
+          code={selectedLevel ? `ACTIVE // ${selectedLevel.toUpperCase()}` : "ACTIVE // SELECT LEVEL"}
         />
 
         <section className="cq-level-grid">
@@ -715,7 +656,7 @@ export default function App() {
               >
                 <button
                   className="cq-level-heading"
-                  onClick={() => selectLevel(level.id)}
+                  onClick={() => level.id === "beginner" ? enterLevel(level.id) : selectLevel(level.id)}
                   disabled={!isUnlocked}
                 >
                   <div className="cq-level-name">
@@ -729,27 +670,6 @@ export default function App() {
                 </button>
 
                 <p className="cq-level-description">{level.description}</p>
-
-                <div className="cq-scenario-list">
-                  {level.scenarios.map(([icon, name, type, available]) => (
-                    <button
-                      key={name}
-                      className={`cq-scenario-row ${available && isUnlocked ? "available" : "scenario-locked"}`}
-                      disabled={!isUnlocked || !available}
-                      onClick={() => {
-                        setSelectedType(type);
-                        setSelectedLevel(level.id);
-                        setScenario(null);
-                        setFeedback(null);
-                        setHint("");
-                      }}
-                    >
-                      <span>{icon}</span>
-                      <strong>{name}</strong>
-                      <span>{available && isUnlocked ? "✅" : "🔒"}</span>
-                    </button>
-                  ))}
-                </div>
 
                 <div className="cq-level-progress-label">
                   <span>Progress</span>
@@ -766,11 +686,11 @@ export default function App() {
                 {level.id === "beginner" && isUnlocked ? (
                   <button
                     className="cq-continue-button"
-                    onClick={startScenario}
+                    onClick={() => enterLevel(level.id)}
                   >
-                    Continue Beginner <span>→</span>
+                    Enter Beginner <span>→</span>
                   </button>
-                ) : !isUnlocked ? (
+                ) : selectedLevel === level.id && !isUnlocked ? (
                   <div className="cq-unlock-message">
                     Complete{" "}
                     {level.id === "intermediate" ? "Beginner" : "Intermediate"}{" "}
@@ -781,172 +701,6 @@ export default function App() {
             );
           })}
         </section>
-
-        <SectionTitle
-          number="02"
-          title={`${selectedLevel} scenarios`}
-          code="SELECT ATTACK SURFACE"
-        />
-
-        <section className="cq-type-grid">
-          {SCENARIO_TYPES.map(scenarioType => (
-            <button
-              key={scenarioType.id}
-              className={`cq-type ${selectedType === scenarioType.id ? "active" : ""}`}
-              onClick={() => selectScenarioType(scenarioType.id)}
-            >
-              <b>{scenarioType.icon}</b>
-              <span>
-                <strong>{scenarioType.name}</strong>
-                <small>{scenarioType.description}</small>
-              </span>
-              <i>→</i>
-            </button>
-          ))}
-        </section>
-
-        <section className="cq-simulator">
-          <div className="cq-sim-header">
-            <div>
-              <div className="cq-eyebrow">03 // LIVE SIMULATION</div>
-              <h2>{scenario ? scenario.title : "Ready when you are."}</h2>
-            </div>
-            <span>{scenario ? "SCENARIO LOADED" : "AWAITING INPUT"}</span>
-          </div>
-
-          {!scenario ? (
-            <div className="cq-launch">
-              <div className="cq-launch-art">
-                <b>+</b>
-                <code>
-                  SCENARIO_GENERATOR
-                  <br />
-                  <span>
-                    TYPE: {selectedType.toUpperCase()}
-                    <br />
-                    LEVEL: {selectedLevel.toUpperCase()}
-                    <br />
-                    MODE: ADAPTIVE
-                  </span>
-                </code>
-              </div>
-
-              <div>
-                <h3>Enter the simulation layer.</h3>
-                <p>
-                  Choose an attack surface above, then test your instincts in a
-                  realistic training scenario.
-                </p>
-                <button className="cq-continue-button" onClick={openInbox}>
-                  INITIALIZE SCENARIO →
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="cq-play">
-              <div className="cq-scenario">
-                <div className="cq-tag">
-                  {selectedType.toUpperCase()} // {selectedLevel.toUpperCase()}
-                </div>
-                <p>{scenario.briefing}</p>
-
-                {selectedType === "phishing" ? (
-                  <div className="cq-mail">
-                    <div className="cq-mail-top">
-                      ✉ MAIL // INBOX <span>•••</span>
-                    </div>
-                    <div className="cq-mail-meta">
-                      <small>FROM</small>
-                      <b>{scenario.sender}</b>
-                      <small>SUBJECT</small>
-                      <b>{scenario.subject}</b>
-                    </div>
-                    <div className="cq-mail-body">{scenario.body}</div>
-                    <div className="cq-login">
-                      <strong>NORTHSTAR</strong>
-                      <small>WORKSPACE</small>
-                      <input placeholder="employee@northstar.example" />
-                      <input placeholder="Password" type="password" />
-                      <button>CONTINUE</button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="cq-dialogue">{scenario.conversation}</div>
-                )}
-              </div>
-
-              <div className="cq-choices">
-                <label>SELECT YOUR RESPONSE</label>
-                {scenario.choices.map(([id, label], index) => (
-                  <button
-                    key={id}
-                    className={selectedAnswer === id ? "chosen" : ""}
-                    onClick={() => setSelectedAnswer(id)}
-                  >
-                    <b>{String.fromCharCode(65 + index)}</b>
-                    {label}
-                    {selectedAnswer === id && <span>✓</span>}
-                  </button>
-                ))}
-                <button
-                  className="cq-primary"
-                  disabled={!selectedAnswer}
-                  onClick={submitAnswer}
-                >
-                  SUBMIT RESPONSE →
-                </button>
-              </div>
-            </div>
-          )}
-
-          {scenario && !feedback && (
-            <div className="cq-hint-area">
-              <button
-                className="cq-hint-button"
-                onClick={requestHint}
-                disabled={Boolean(hint)}
-              >
-                {hint
-                  ? "HINT USED -10 POINTS"
-                  : "ASK CYBERNERB FOR A HINT (-10 POINTS)"}
-              </button>
-              {hint && (
-                <div className="cq-cybernerb-message">
-                  <strong>CyberNerb</strong>
-                  <p>{hint}</p>
-                </div>
-              )}
-            </div>
-          )}
-
-          {feedback && (
-            <div
-              className={`cq-result ${feedback.passed ? "success" : "fail"}`}
-            >
-              <div className="cq-cybernerb-label">
-                CyberNerb // PERFORMANCE FEEDBACK
-              </div>
-              <strong>
-                {feedback.passed ? "✓ SIGNAL VERIFIED" : "⚠ SIGNAL MISSED"}
-              </strong>
-              <h3>
-                {feedback.passed
-                  ? "Node cleared. The next level is unlocked."
-                  : "Stay in this node and try a new scenario."}
-              </h3>
-              <p>
-                {feedback.passed
-                  ? `Good decision. Watch for ${scenario.flags.join(", ")}.`
-                  : `Review the warning signs: ${scenario.flags.join(", ")}. Slow down and verify before you act.`}
-              </p>
-              <button onClick={startScenario}>
-                {feedback.passed ? "RUN NEXT VARIANT" : "RETRY NODE"} ↻
-              </button>
-            </div>
-          )}
-        </section>
-
-  
 
         <footer className="cq-footer">
 
