@@ -1,0 +1,1722 @@
+* {
+  box-sizing: border-box;
+}
+
+
+
+.app {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top right, #12345c, transparent 35%),
+    #07111f;
+}
+
+.navbar {
+  height: 70px;
+  padding: 0 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #203852;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.nav-text {
+  color: #94a3b8;
+}
+
+.home {
+  width: 86%;
+  max-width: 1100px;
+  margin: auto;
+  padding: 80px 0;
+}
+
+.hero {
+  max-width: 700px;
+  margin-bottom: 70px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 9px 15px;
+  border-radius: 30px;
+  background: #102b45;
+  color: #38bdf8;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-size: 58px;
+  margin: 0 0 20px;
+}
+
+.hero h1 span {
+  color: #38bdf8;
+}
+
+.hero p {
+  color: #94a3b8;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.training h2 {
+  font-size: 28px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: #6c96c9;
+  border: 1px solid #203852;
+  border-radius: 18px;
+  padding: 28px;
+}
+
+.card.active {
+  cursor: pointer;
+}
+
+.card.active:hover {
+  border-color: #2d6178;
+  transform: translateY(-4px);
+  transition: 0.2s;
+}
+
+.icon {
+  font-size: 40px;
+}
+
+.card h3 {
+  font-size: 21px;
+}
+
+.card p {
+  color: #ffffff !important;
+}
+
+.card button {
+  width: 100%;
+  padding: 13px;
+  border: 0;
+  border-radius: 9px;
+  background: #0ea5e9;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.card span {
+  color: #64748b;
+}
+
+.progress {
+  margin-top: 45px;
+  padding: 25px;
+  background: #0b1a2c;
+  border: 1px solid #203852;
+  border-radius: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.scenario-header h1 {
+  margin: 0;
+  font-size: 32px;
+  color: #ffffff;
+}
+
+.scenario-header p {
+  margin: 5px 0 0;
+  color: #94a3b8;
+}
+
+.progress p {
+  color: #94a3b8;
+}
+
+.score {
+  text-align: center;
+}
+
+.score strong {
+  display: block;
+  font-size: 35px;
+  color: #38bdf8;
+}
+
+.score small {
+  color: #64748b;
+}
+
+@media (max-width: 800px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+  }
+}
+/* =========================
+   PHISHING SCENARIO
+========================= */
+
+.scenario-container {
+  width: 90%;
+  max-width: 900px;
+  margin: auto;
+  padding: 45px 0;
+}
+
+.back-button {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 15px;
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+.back-button:hover {
+  color: #133a4b;
+}
+
+.scenario-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.scenario-header > span {
+  font-size: 45px;
+}
+
+.scenario-header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.scenario-header p {
+  margin: 5px 0 0;
+  color: #64748b;
+}
+
+/* Email */
+
+.email-card {
+  background: white;
+  color: #0f1b34;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+.email-top {
+  padding: 22px;
+  background: #f1f5f9;
+  border-bottom: 1px solid #dbe3ec;
+}
+
+.email-top div {
+  margin-bottom: 10px;
+}
+
+.email-top div:last-child {
+  margin-bottom: 0;
+}
+
+.email-top strong {
+  margin-right: 8px;
+}
+
+.email-body {
+  padding: 30px;
+  line-height: 1.7;
+  font-size: 16px;
+  color:#07111f;
+}
+
+.fake-link {
+  border: none;
+  background: #2563eb;
+  color: white;
+  padding: 13px 25px;
+  border-radius: 7px;
+  cursor: pointer;
+  margin: 10px 0 20px;
+}
+
+/* Question */
+
+.question-card {
+  padding: 30px;
+  border: 1px solid #203852;
+  border-radius: 16px;
+  background: #0b1a2c;
+}
+
+.question-card h2 {
+  margin-top: 0;
+}
+
+.question-card > p {
+  color: #94a3b8;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 25px;
+}
+
+.action-button {
+  padding: 16px;
+  border: 1px solid #29435f;
+  border-radius: 10px;
+  background: #102238;
+  color: white;
+  cursor: pointer;
+  text-align: left;
+  font-size: 15px;
+}
+
+.action-button:hover {
+  border-color: #38bdf8;
+  background: #142d47;
+}
+
+/* Feedback */
+
+.feedback {
+  margin-top: 25px;
+  padding: 25px;
+  border-radius: 14px;
+  background: #071a2a;
+}
+
+.feedback p,
+.feedback li {
+  color: #cbd5e1;
+  line-height: 1.7;
+}
+
+.feedback ul {
+  padding-left: 20px;
+}
+
+.correct {
+  color: #22c55e;
+}
+
+.wrong {
+  color: #ef4444;
+}
+
+.points {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: #064e3b;
+  color: #4ade80;
+  font-weight: bold;
+}
+
+.wrong-points {
+  background: #451a03;
+  color: #fb923c;
+}
+
+.next-button {
+  display: block;
+  margin-top: 25px;
+  padding: 13px 20px;
+  border: none;
+  border-radius: 9px;
+  background: #0ea5e9;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.next-button:hover {
+  background: #0284c7;
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+  .actions {
+    grid-template-columns: 1fr;
+  }
+
+  .scenario-header h1 {
+    font-size: 25px;
+  }
+
+  .email-body {
+    padding: 20px;
+  }
+}
+/* Fix text visibility */
+
+.scenario-container {
+  color: #615151;
+}
+
+.scenario-container h1,
+.scenario-container h2,
+.scenario-container h3 {
+  color: #ffffff;
+}
+
+.scenario-container p {
+  color: #cbd5e1;
+}
+
+.scenario-header h1 {
+  color: #ffffff !important;
+}
+
+.scenario-header p {
+  color: #94a3b8 !important;
+}
+
+.question-card h2 {
+  color: #ffffff !important;
+}
+
+.question-card p {
+  color: #cbd5e1 !important;
+}
+
+.action-button {
+  color: #ffffff !important;
+}
+
+.email-top {
+  color: #172033 !important;
+}
+
+.email-top strong {
+  color: #172033 !important;
+}
+
+.email-body {
+  color: #000000 !important;
+}
+
+.email-body p {
+  color: #000000 !important;
+}
+
+.feedback {
+  color: #ffffff;
+}
+
+.feedback h2 {
+  color: #ffffff;
+}
+
+.feedback p,
+.feedback li {
+  color: #cbd5e1 !important;
+}
+/* =========================
+   INBOX
+========================= */
+
+.inbox-list {
+  width: 100%;
+  max-width: 950px;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inbox-email {
+  width: 100%;
+  background: #111d2e;
+  border: 1px solid #263750;
+  border-radius: 12px;
+  padding: 18px 22px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  text-align: left;
+  color: white;
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.inbox-email:hover {
+  background: #17263b;
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+}
+
+.inbox-email > div {
+  flex: 1;
+}
+
+.inbox-email strong {
+  display: block;
+  font-size: 17px;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.inbox-email p {
+  margin: 0 0 5px;
+  font-size: 15px;
+  color: #dbe7f5;
+  font-weight: 600;
+}
+
+.inbox-email small {
+  display: block;
+  color: #8fa4bf;
+  font-size: 14px;
+}
+
+.inbox-email > span {
+  color: #8fa4bf;
+  font-size: 13px;
+  margin-left: 25px;
+  white-space: nowrap;
+}
+/* =========================
+   EMAIL VIEW
+========================= */
+
+.email-view {
+  width: 100%;
+  max-width: 900px;
+  margin: 30px auto;
+  background: #111d2e;
+  border: 1px solid #263750;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.email-view-header {
+  padding: 28px 30px 20px;
+  border-bottom: 1px solid #263750;
+}
+
+.email-view-header h1 {
+  margin: 0 0 22px;
+  font-size: 30px;
+  line-height: 1.25;
+  color: #ffffff;
+}
+
+.email-sender {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 16px;
+  align-items: center;
+}
+
+.email-sender strong {
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.email-sender span {
+  grid-column: 1;
+  color: #8fa4bf;
+  font-size: 14px;
+}
+
+.email-sender small {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  color: #8fa4bf;
+  white-space: nowrap;
+}
+
+.email-message {
+  padding: 30px;
+  color: #dbe7f5;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.email-message p {
+  margin: 0 0 18px;
+}
+
+.phishing-link {
+  display: inline-block;
+  margin: 8px 0 24px;
+  padding: 12px 20px;
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.phishing-link:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.email-signature {
+  color: #b8c7da;
+}
+
+/* =========================
+   FAKE LOGIN PAGE
+========================= */
+
+.fake-site {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.fake-site-warning {
+  margin-bottom: 18px;
+  font-size: 16px;
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+.fake-site-card {
+  width: 100%;
+  max-width: 520px;
+  background: #111d2e;
+  border: 1px solid #263750;
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.fake-site-logo {
+  font-size: 42px;
+  text-align: center;
+}
+
+.fake-site-card h1 {
+  margin: 0 0 8px;
+  font-size: 30px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.fake-site-card p {
+  margin: 0 0 8px;
+  text-align: center;
+  color: #b8c7da;
+  line-height: 1.6;
+}
+
+.fake-site-card label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #dbe7f5;
+}
+
+.fake-site-card input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border-radius: 9px;
+  border: 1px solid #3a4d66;
+  background: #0b1524;
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.fake-site-card input:focus {
+  outline: 2px solid #3b82f6;
+  border-color: transparent;
+}
+
+.login-error {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  font-size: 14px;
+  text-align: center;
+}
+
+.fake-login-button {
+  margin-top: 4px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  background: #ef4444;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.fake-login-button:hover {
+  background: #dc2626;
+}
+
+.fake-site-card small {
+  text-align: center;
+  color: #7f93ad;
+}
+/* =========================
+   INBOX POLISH
+========================= */
+
+.scenario-header {
+  max-width: 1100px;
+  margin: 0 auto 24px;
+}
+
+.inbox-list {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.inbox-email {
+  min-height: 120px;
+  padding: 22px 28px;
+  border-radius: 14px;
+}
+
+.inbox-email strong {
+  font-size: 20px;
+}
+
+.inbox-email p {
+  font-size: 16px;
+  margin-top: 6px;
+}
+
+.inbox-email small {
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.attack-notification {
+  max-width: 1100px;
+  margin: 0 auto 20px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+  font-weight: 700;
+}
+
+.back-button {
+  margin-bottom: 20px;
+}
+
+/* =========================
+   EMAIL VIEW POLISH
+========================= */
+
+.email-view {
+  max-width: 950px;
+  margin: 0 auto;
+  background: #111d2e;
+  border: 1px solid #263750;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.email-view-header {
+  padding: 28px 32px;
+  border-bottom: 1px solid #263750;
+}
+
+.email-view-header h1 {
+  margin: 0 0 20px;
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.email-sender {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: #9fb4ce;
+}
+
+.email-sender strong {
+  color: #ffffff;
+  font-size: 17px;
+}
+
+.email-sender small {
+  color: #7f93ad;
+}
+
+.email-message {
+  padding: 32px;
+  color: #dbe7f5;
+  line-height: 1.7;
+}
+
+.email-message p {
+  margin: 0 0 18px;
+}
+
+.phishing-link,
+.safe-link-button {
+  padding: 11px 18px;
+  border: none;
+  border-radius: 9px;
+  background: #1ea7e1;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 6px 8px 16px 0;
+}
+
+.phishing-link:hover,
+.safe-link-button:hover {
+  opacity: 0.88;
+}
+
+.hint-section {
+  max-width: 950px;
+  margin: 0 auto 16px;
+}
+
+.hint-button {
+  padding: 9px 15px;
+  border: 1px solid #3a4d66;
+  border-radius: 8px;
+  background: #18263a;
+  color: #dbe7f5;
+  cursor: pointer;
+}
+
+.hint-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.hint-box {
+  margin-top: 10px;
+  padding: 12px 15px;
+  border-radius: 9px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fcd34d;
+}
+
+/* EMAIL ACTION BUTTONS */
+
+.email-message button {
+  font-family: inherit;
+}
+
+.safe-action-button,
+.report-button {
+  padding: 11px 18px;
+  border: none;
+  border-radius: 9px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 8px 6px;
+}
+
+.safe-action-button {
+  background: #16a36a;
+  color: white;
+}
+
+.safe-action-button:hover {
+  background: #128457;
+}
+
+.report-button {
+  background: #ef4444;
+  color: white;
+}
+
+.report-button:hover {
+  background: #dc2626;
+}
+
+.safe-link-button {
+  display: block;
+  width: fit-content;
+  margin: 18px auto;
+}
+/* =========================
+   SAFE CONTENT PAGES
+========================= */
+
+.lesson-box {
+  width: 100%;
+  max-width: 760px;
+  margin: 30px auto;
+  padding: 30px;
+  background: #111d2e;
+  border: 1px solid #263750;
+  border-radius: 16px;
+  color: #dbe7f5;
+}
+
+.lesson-box h1 {
+  margin: 0 0 20px;
+  font-size: 32px;
+  color: #ffffff;
+}
+
+.lesson-box h3 {
+  margin-top: 0;
+  color: #ffffff;
+}
+
+.lesson-box p {
+  margin: 12px 0;
+  line-height: 1.6;
+}
+
+.lesson-box .safe-action-button {
+  display: block;
+  width: fit-content;
+  margin: 24px auto 0;
+}
+
+/* =========================
+   FINAL RESULTS
+========================= */
+
+.compromised-card {
+  width: 100%;
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 36px;
+  background: #111d2e;
+  border: 1px solid #263750;
+  border-radius: 18px;
+  text-align: center;
+  color: #dbe7f5;
+}
+
+.compromised-card h1 {
+  margin: 10px 0 16px;
+  font-size: 42px;
+  color: #ffffff;
+}
+
+.compromised-card > p {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.compromised-icon {
+  font-size: 42px;
+}
+
+.points {
+  width: fit-content;
+  margin: 24px auto;
+  padding: 12px 22px;
+  border-radius: 10px;
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.wrong-points {
+  background: rgba(239, 68, 68, 0.14);
+  color: #f87171;
+}
+
+.result-penalty {
+  width: fit-content;
+  margin: 22px auto;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  font-weight: 700;
+}
+
+.next-button {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 10px;
+  background: #1ea7e1;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.next-button:hover {
+  opacity: 0.9;
+}
+/* =========================
+   DASHBOARD / HOME POLISH
+========================= */
+
+.home {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+}
+
+.hero {
+  text-align: center;
+  padding: 55px 20px 45px;
+}
+
+.hero .badge {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(30, 167, 225, 0.12);
+  color: #67c9f0;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 52px;
+  line-height: 1.1;
+  color: #ffffff;
+}
+
+.hero h1 span {
+  color: #1ea7e1;
+}
+
+.hero p {
+  max-width: 700px;
+  margin: 20px auto 0;
+  color: #9fb4ce;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.training {
+  margin-top: 30px;
+}
+
+.training h2 {
+  margin-bottom: 22px;
+  font-size: 30px;
+  color: #ffffff;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.card {
+  background: #111d2e;
+  border: 1px solid #263750;
+  border-radius: 16px;
+  padding: 28px;
+  min-height: 260px;
+}
+
+.card.active {
+  border-color: rgba(30, 167, 225, 0.55);
+}
+
+.card .icon {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.card h3 {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font-size: 22px;
+}
+
+.card p {
+  color: #9fb4ce;
+  line-height: 1.6;
+  min-height: 78px;
+}
+
+.card button {
+  margin-top: 14px;
+  padding: 11px 18px;
+  border: none;
+  border-radius: 9px;
+  background: #1ea7e1;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.card span {
+  display: inline-block;
+  margin-top: 16px;
+  color: #7f93ad;
+  font-weight: 700;
+}
+
+.progress {
+  margin-top: 34px;
+  padding: 24px 28px;
+  background: #111d2e;
+  border: 1px solid #263750;
+  border-radius: 16px;
+
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 24px;
+  align-items: center;
+}
+
+.progress h3 {
+  margin: 0 0 8px;
+  color: #ffffff;
+}
+
+.progress p {
+  margin: 0;
+  color: #9fb4ce;
+}
+
+.score {
+  min-width: 110px;
+  text-align: center;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: #0b1524;
+}
+
+.score strong {
+  display: block;
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.score small {
+  color: #7f93ad;
+}
+
+@media (max-width: 900px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .progress {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: 40px;
+  }
+}
+
+/* =========================
+   NAVBAR FINAL POLISH
+========================= */
+
+.navbar {
+  min-height: 72px;
+  padding: 0 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #263750;
+  background: rgba(7, 18, 32, 0.95);
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.score-top {
+  padding: 9px 15px;
+  border-radius: 10px;
+  background: rgba(255, 193, 7, 0.08);
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    padding: 0 18px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .score-top {
+    font-size: 15px;
+  }
+}
+
+/* =========================
+   HERO CENTER FIX
+========================= */
+
+.hero {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 20px 50px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero .badge {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero h1 {
+  width: 100%;
+  text-align: center;
+}
+
+.hero p {
+  width: 100%;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.realistic-phishing-training {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.realistic-phishing-training *,
+.realistic-phishing-training *::before,
+.realistic-phishing-training *::after {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   CYBERNERB THEME OVERRIDES
+   Keeps the realistic phishing layout while matching
+   the existing CYBERNERB visual identity.
+   ========================================================= */
+
+.realistic-phishing-training.app {
+  min-height: 100vh;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+}
+
+/* =========================
+   TOP NAVBAR
+   ========================= */
+
+.realistic-phishing-training .navbar {
+  min-height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 28px;
+
+  background: var(--color-surface);
+
+  border-bottom: 1px solid var(--color-border);
+
+  box-shadow: none;
+}
+
+/* =========================
+   CYBERNERB BRAND
+   ========================= */
+
+.realistic-phishing-training .logo {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  color: var(--color-text-primary);
+}
+
+.realistic-phishing-training .mission-brand-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  color: var(--color-primary);
+
+  background: rgba(34, 211, 238, 0.1);
+
+  border: 1px solid rgba(34, 211, 238, 0.2);
+}
+
+.realistic-phishing-training .mission-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.realistic-phishing-training .mission-brand-text span {
+  font-family: var(--font-heading);
+
+  color: var(--color-text-primary);
+
+  font-size: 16px;
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+}
+
+.realistic-phishing-training .mission-brand-text small {
+  margin-top: 1px;
+
+  color: var(--color-text-muted);
+
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: 1.2px;
+}
+
+/* =========================
+   SCORE
+   ========================= */
+
+.realistic-phishing-training .score-top {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 9px 13px;
+
+  border-radius: var(--radius-md);
+
+  background: rgba(34, 211, 238, 0.09);
+
+  border: 1px solid rgba(34, 211, 238, 0.12);
+
+  color: var(--color-primary);
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.realistic-phishing-training .score-top svg {
+  color: var(--color-primary);
+}
+
+/* =========================
+   MAIN MISSION AREA
+   ========================= */
+
+.realistic-phishing-training .scenario-container {
+  width: min(1100px, calc(100% - 40px));
+
+  margin: 0 auto;
+
+  padding: 32px 0 60px;
+}
+
+/* =========================
+   EXIT / BACK BUTTON
+   ========================= */
+
+.realistic-phishing-training .back-button {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 24px;
+
+  padding: 9px 13px;
+
+  border: 1px solid var(--color-border);
+
+  border-radius: var(--radius-md);
+
+  background: var(--color-surface);
+
+  color: var(--color-text-secondary);
+
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.realistic-phishing-training .back-button:hover {
+  background: var(--color-surface-light);
+
+  color: var(--color-primary);
+
+  border-color: rgba(34, 211, 238, 0.25);
+}
+
+/* =========================
+   INBOX HEADER
+   ========================= */
+
+.realistic-phishing-training .scenario-header {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  margin-bottom: 24px;
+}
+
+.realistic-phishing-training .scenario-header-icon {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 12px;
+
+  color: var(--color-primary);
+
+  background: rgba(34, 211, 238, 0.1);
+
+  border: 1px solid rgba(34, 211, 238, 0.2);
+}
+
+.realistic-phishing-training .scenario-header h1 {
+  margin: 0;
+
+  font-family: var(--font-heading);
+
+  color: var(--color-text-primary);
+
+  font-size: 25px;
+}
+
+.realistic-phishing-training .scenario-header p {
+  margin: 4px 0 0;
+
+  color: var(--color-text-muted);
+
+  font-size: 13px;
+}
+
+/* =========================
+   INBOX
+   ========================= */
+
+.realistic-phishing-training .inbox-list {
+  overflow: hidden;
+
+  border: 1px solid var(--color-border);
+
+  border-radius: var(--radius-md);
+
+  background: var(--color-surface);
+}
+
+.realistic-phishing-training .inbox-email {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 18px 20px;
+
+  background: var(--color-surface);
+
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+
+  color: var(--color-text-primary);
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.realistic-phishing-training .inbox-email:last-child {
+  border-bottom: none;
+}
+
+.realistic-phishing-training .inbox-email:hover {
+  background: var(--color-surface-light);
+}
+
+.realistic-phishing-training .inbox-email strong {
+  color: var(--color-text-primary);
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.realistic-phishing-training .inbox-email p {
+  margin: 5px 0;
+
+  color: var(--color-text-secondary);
+
+  font-size: 13px;
+}
+
+.realistic-phishing-training .inbox-email small {
+  color: var(--color-text-muted);
+
+  font-size: 12px;
+}
+
+.realistic-phishing-training .inbox-email > span {
+  align-self: flex-start;
+
+  color: var(--color-text-muted);
+
+  font-size: 11px;
+
+  white-space: nowrap;
+}
+
+/* =========================
+   EMAIL VIEW
+   ========================= */
+
+.realistic-phishing-training .email-view {
+  overflow: hidden;
+
+  border: 1px solid var(--color-border);
+
+  border-radius: var(--radius-md);
+
+  background: var(--color-surface);
+}
+
+.realistic-phishing-training .email-view-header {
+  padding: 22px 24px;
+
+  border-bottom: 1px solid var(--color-border);
+}
+
+.realistic-phishing-training .email-view-header h1 {
+  margin: 0 0 15px;
+
+  font-family: var(--font-heading);
+
+  color: var(--color-text-primary);
+}
+
+.realistic-phishing-training .email-sender {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.realistic-phishing-training .email-sender strong {
+  color: var(--color-text-primary);
+}
+
+.realistic-phishing-training .email-sender span,
+.realistic-phishing-training .email-sender small {
+  color: var(--color-text-muted);
+}
+
+.realistic-phishing-training .email-message {
+  padding: 24px;
+
+  color: var(--color-text-secondary);
+
+  line-height: 1.7;
+}
+
+/* =========================
+   HINT
+   ========================= */
+
+.realistic-phishing-training .hint-section {
+  padding: 18px 24px 0;
+}
+
+.realistic-phishing-training .hint-button {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 9px 13px;
+
+  border: 1px solid rgba(34, 211, 238, 0.2);
+
+  border-radius: var(--radius-md);
+
+  background: rgba(34, 211, 238, 0.08);
+
+  color: var(--color-primary);
+
+  font-family: inherit;
+
+  cursor: pointer;
+}
+
+.realistic-phishing-training .hint-button:hover:not(:disabled) {
+  background: rgba(34, 211, 238, 0.14);
+}
+
+.realistic-phishing-training .hint-button:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+.realistic-phishing-training .hint-box {
+  margin-top: 12px;
+
+  padding: 13px 15px;
+
+  border-radius: var(--radius-md);
+
+  border: 1px solid rgba(34, 211, 238, 0.16);
+
+  background: rgba(34, 211, 238, 0.06);
+
+  color: var(--color-text-secondary);
+}
+
+/* =========================
+   PRIMARY BUTTON
+   ========================= */
+
+.realistic-phishing-training .next-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 24px;
+
+  padding: 11px 18px;
+
+  border: 1px solid rgba(34, 211, 238, 0.25);
+
+  border-radius: var(--radius-md);
+
+  background: var(--color-primary);
+
+  color: #06131a;
+
+  font-family: inherit;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.realistic-phishing-training .next-button:hover {
+  opacity: 0.9;
+
+  transform: translateY(-1px);
+}
+
+/* =========================
+   SECURITY NOTIFICATION
+   ========================= */
+
+.realistic-phishing-training .attack-notification {
+  margin-bottom: 16px;
+
+  padding: 12px 15px;
+
+  border-radius: var(--radius-md);
+
+  border: 1px solid var(--color-border);
+
+  background: var(--color-surface-light);
+
+  color: var(--color-text-primary);
+
+  font-size: 13px;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 700px) {
+  .realistic-phishing-training .navbar {
+    padding: 0 16px;
+  }
+
+  .realistic-phishing-training .scenario-container {
+    width: calc(100% - 28px);
+
+    padding-top: 22px;
+  }
+
+  .realistic-phishing-training .mission-brand-text small {
+    display: none;
+  }
+
+  .realistic-phishing-training .inbox-email {
+    padding: 15px;
+  }
+}

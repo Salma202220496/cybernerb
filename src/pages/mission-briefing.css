@@ -1,0 +1,54 @@
+.mission-briefing-page {
+  width: 100%;
+  padding-bottom: 40px;
+}
+
+.briefing-topbar {
+  margin-bottom: 15px;
+}
+
+.briefing-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 10px;
+
+  color: var(--text-muted);
+}
+
+.briefing-breadcrumb svg:first-child {
+  color: var(--primary-color);
+}
+
+.breadcrumb-arrow {
+  transform: rotate(180deg);
+}
+
+.briefing-breadcrumb strong {
+  color: var(--text-secondary);
+}
+
+.briefing-main-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.35fr)
+    minmax(300px, 0.8fr);
+
+  gap: 20px;
+
+  margin-bottom: 20px;
+}
+
+@media (max-width: 900px) {
+  .briefing-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 550px) {
+  .briefing-breadcrumb {
+    flex-wrap: wrap;
+  }
+}

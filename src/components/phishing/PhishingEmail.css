@@ -1,0 +1,268 @@
+.phishing-email-card {
+  overflow: hidden;
+
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+
+  background: var(--card-bg);
+}
+
+/* Toolbar */
+
+.email-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 14px 18px;
+
+  border-bottom: 1px solid var(--border-color);
+
+  background: var(--background-secondary);
+}
+
+.email-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--text-primary);
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.email-toolbar-left svg {
+  color: var(--primary-color);
+}
+
+.simulation-badge {
+  padding: 5px 8px;
+
+  border-radius: 5px;
+
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+}
+
+/* Email content */
+
+.email-content {
+  padding: 25px;
+}
+
+.email-header {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding-bottom: 18px;
+
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sender-avatar {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: var(--primary-color);
+
+  background: rgba(34, 211, 238, 0.1);
+}
+
+.sender-information {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.sender-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sender-name-row strong {
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.new-email {
+  padding: 3px 5px;
+
+  border-radius: 4px;
+
+  font-size: 7px;
+  font-weight: 700;
+
+  color: var(--primary-color);
+  background: rgba(34, 211, 238, 0.1);
+}
+
+.sender-email {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.email-time {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.email-subject {
+  margin: 22px 0 18px;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  color: var(--text-primary);
+}
+
+.email-body {
+  max-width: 680px;
+
+  font-size: 12px;
+  line-height: 1.8;
+
+  color: var(--text-secondary);
+}
+
+.email-body p {
+  margin: 0 0 14px;
+}
+
+.fake-link-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  margin: 5px 0 16px;
+
+  padding: 10px 15px;
+
+  border: none;
+  border-radius: 7px;
+
+  background: #2563eb;
+
+  color: white;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: default;
+}
+
+.email-signature {
+  color: var(--text-muted);
+}
+
+.email-attachment {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-top: 5px;
+  padding: 8px 10px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 7px;
+
+  font-size: 9px;
+
+  color: var(--text-muted);
+}
+
+/* Investigation */
+
+.investigation-section {
+  padding: 22px;
+
+  border-top: 1px solid var(--border-color);
+
+  background: var(--background-secondary);
+}
+
+.investigation-header {
+  display: flex;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 16px;
+}
+
+.investigation-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+
+  color: var(--primary-color);
+}
+
+.investigation-header h3 {
+  margin: 5px 0 3px;
+
+  font-size: 16px;
+
+  color: var(--text-primary);
+}
+
+.investigation-header p {
+  margin: 0;
+
+  font-size: 10px;
+
+  color: var(--text-muted);
+}
+
+.clue-count {
+  height: fit-content;
+
+  padding: 6px 9px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+
+  font-size: 9px;
+
+  color: var(--text-secondary);
+}
+
+.clues-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+@media (max-width: 550px) {
+  .email-content {
+    padding: 18px;
+  }
+
+  .email-subject {
+    font-size: 15px;
+  }
+
+  .investigation-section {
+    padding: 18px;
+  }
+
+  .investigation-header {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,313 @@
+.cyber-topbar {
+  position: fixed;
+
+  top: 0;
+  right: 0;
+
+  left: 250px;
+
+  height: 76px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 20px;
+
+  padding: 0 28px;
+
+  background: rgba(11, 16, 32, 0.88);
+
+  border-bottom: 1px solid var(--color-border);
+
+  backdrop-filter: blur(14px);
+
+  z-index: 90;
+}
+
+/* =========================
+   SEARCH
+   ========================= */
+
+.topbar-search {
+  width: 320px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  height: 40px;
+
+  padding: 0 12px;
+
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+
+  border-radius: var(--radius-md);
+
+  color: var(--color-text-muted);
+}
+
+.topbar-search:focus-within {
+  border-color: var(--color-primary);
+}
+
+.topbar-search input {
+  width: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: var(--color-text-primary);
+
+  font-size: 12px;
+}
+
+.topbar-search input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.search-shortcut {
+  width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 5px;
+
+  background: var(--color-bg-secondary);
+
+  color: var(--color-text-muted);
+
+  font-size: 12px;
+}
+
+/* =========================
+   ACTIONS
+   ========================= */
+
+.topbar-actions {
+  margin-left: auto;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+}
+
+/* =========================
+   CREDITS
+   ========================= */
+
+.credits-display {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding-right: 14px;
+
+  border-right: 1px solid var(--color-border);
+}
+
+.credits-icon {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  background: rgba(245, 158, 11, 0.1);
+
+  color: var(--color-warning);
+}
+
+.credits-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.credits-text span {
+  color: var(--color-text-muted);
+
+  font-size: 9px;
+}
+
+.credits-text strong {
+  color: var(--color-text-primary);
+
+  font-size: 12px;
+}
+
+/* =========================
+   ICON BUTTON
+   ========================= */
+
+.topbar-icon-button {
+  position: relative;
+
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--color-border);
+
+  border-radius: 9px;
+
+  background: var(--color-surface);
+
+  color: var(--color-text-secondary);
+}
+
+.topbar-icon-button:hover {
+  color: var(--color-text-primary);
+
+  border-color: var(--color-border-light);
+}
+
+.notification-dot {
+  position: absolute;
+
+  top: 8px;
+  right: 8px;
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: var(--color-danger);
+
+  border: 1px solid var(--color-surface);
+}
+
+/* =========================
+   PROFILE
+   ========================= */
+
+.topbar-profile {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 4px;
+
+  border: none;
+
+  background: transparent;
+
+  color: var(--color-text-secondary);
+
+  text-align: left;
+}
+
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: rgba(34, 211, 238, 0.12);
+
+  border: 1px solid rgba(34, 211, 238, 0.2);
+
+  color: var(--color-primary);
+
+  font-family: var(--font-heading);
+
+  font-weight: 700;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-info strong {
+  color: var(--color-text-primary);
+
+  font-size: 11px;
+}
+
+.profile-info span {
+  color: var(--color-text-muted);
+
+  font-size: 10px;
+}
+
+/* =========================
+   MOBILE MENU
+   ========================= */
+
+.mobile-menu-button {
+  display: none;
+
+  width: 40px;
+  height: 40px;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--color-border);
+
+  border-radius: var(--radius-md);
+
+  background: var(--color-surface);
+
+  color: var(--color-text-secondary);
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 900px) {
+
+  .cyber-topbar {
+    left: 0;
+
+    padding: 0 18px;
+  }
+
+  .mobile-menu-button {
+    display: flex;
+  }
+
+  .topbar-search {
+    width: 240px;
+  }
+
+}
+
+@media (max-width: 650px) {
+
+  .topbar-search {
+    display: none;
+  }
+
+  .credits-display {
+    display: none;
+  }
+
+  .profile-info,
+  .topbar-profile > svg {
+    display: none;
+  }
+
+}

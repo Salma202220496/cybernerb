@@ -1,0 +1,108 @@
+.objectives-card {
+  padding: 25px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+
+  background: var(--card-bg);
+}
+
+.briefing-section-heading {
+  margin-bottom: 22px;
+}
+
+.briefing-section-heading > span {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+
+  color: var(--primary-color);
+}
+
+.briefing-section-heading h2 {
+  margin: 7px 0 0;
+
+  font-size: 20px;
+
+  color: var(--text-primary);
+}
+
+.objectives-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.objective-item {
+  display: grid;
+  grid-template-columns: 30px 40px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.objective-number {
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  color: var(--primary-color);
+
+  background: rgba(34, 211, 238, 0.08);
+
+  border: 1px solid rgba(34, 211, 238, 0.15);
+}
+
+.objective-icon {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  color: var(--primary-color);
+
+  background: var(--background-secondary);
+}
+
+.objective-content h3 {
+  margin: 0 0 4px;
+
+  font-size: 13px;
+
+  color: var(--text-primary);
+}
+
+.objective-content p {
+  margin: 0;
+
+  font-size: 11px;
+  line-height: 1.5;
+
+  color: var(--text-secondary);
+}
+
+@media (max-width: 550px) {
+  .objectives-card {
+    padding: 20px;
+  }
+
+  .objective-item {
+    grid-template-columns: 28px 36px minmax(0, 1fr);
+  }
+
+  .objective-icon {
+    width: 36px;
+    height: 36px;
+  }
+}

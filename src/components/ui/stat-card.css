@@ -1,0 +1,61 @@
+.cn-stat-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+
+  padding: 20px;
+
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.cn-stat-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-border-light);
+}
+
+.cn-stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: var(--radius-md);
+
+  background: rgba(34, 211, 238, 0.1);
+  color: var(--color-primary);
+}
+
+.cn-stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.cn-stat-label {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.cn-stat-value {
+  margin-top: 2px;
+
+  font-family: var(--font-heading);
+  font-size: 24px;
+  line-height: 1.2;
+
+  color: var(--color-text-primary);
+}
+
+.cn-stat-description {
+  margin-top: 3px;
+
+  color: var(--color-text-muted);
+  font-size: 11px;
+}

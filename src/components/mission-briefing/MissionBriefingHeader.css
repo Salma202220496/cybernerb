@@ -1,0 +1,154 @@
+.briefing-header {
+  margin-bottom: 22px;
+}
+
+.briefing-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 22px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.briefing-back-button:hover {
+  color: var(--primary-color);
+}
+
+.briefing-header-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 22px;
+  padding: 30px;
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  border-radius: 20px;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(34, 211, 238, 0.14),
+      transparent 35%
+    ),
+    var(--card-bg);
+}
+
+.briefing-mission-icon {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 18px;
+
+  color: var(--primary-color);
+
+  background: rgba(34, 211, 238, 0.1);
+
+  border: 1px solid rgba(34, 211, 238, 0.2);
+}
+
+.briefing-title-area {
+  min-width: 0;
+}
+
+.briefing-meta {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.briefing-mission-number {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--primary-color);
+}
+
+.briefing-category {
+  padding: 4px 7px;
+  border-radius: 5px;
+
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.briefing-title-area h1 {
+  margin: 0;
+
+  font-size: 32px;
+  line-height: 1.2;
+
+  color: var(--text-primary);
+}
+
+.briefing-title-area > p {
+  max-width: 650px;
+  margin: 10px 0 18px;
+
+  font-size: 14px;
+  line-height: 1.6;
+
+  color: var(--text-secondary);
+}
+
+.briefing-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.briefing-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.briefing-stat svg {
+  color: var(--primary-color);
+}
+
+.briefing-difficulty {
+  padding: 5px 9px;
+
+  border-radius: 6px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+@media (max-width: 650px) {
+  .briefing-header-main {
+    padding: 22px;
+    flex-direction: column;
+  }
+
+  .briefing-mission-icon {
+    width: 58px;
+    height: 58px;
+  }
+
+  .briefing-title-area h1 {
+    font-size: 25px;
+  }
+}

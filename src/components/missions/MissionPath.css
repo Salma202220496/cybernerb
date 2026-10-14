@@ -1,0 +1,27 @@
+.mission-path {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.mission-path-item {
+  position: relative;
+}
+
+.mission-connector {
+  width: 2px;
+  height: 30px;
+  margin-left: 41px;
+  background: var(--border-color);
+}
+
+.mission-connector.connector-completed {
+  background: rgba(34, 197, 94, 0.5);
+}
+
+@media (max-width: 650px) {
+  .mission-connector {
+    height: 24px;
+    margin-left: 34px;
+  }
+}

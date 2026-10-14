@@ -1,0 +1,95 @@
+.email-clue {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  padding: 13px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+
+  background: var(--background-secondary);
+
+  transition: 0.2s ease;
+}
+
+.email-clue:hover {
+  border-color: rgba(34, 211, 238, 0.25);
+}
+
+.email-clue.inspected {
+  border-color: rgba(34, 211, 238, 0.2);
+}
+
+.clue-icon {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  color: var(--primary-color);
+
+  background: rgba(34, 211, 238, 0.08);
+}
+
+.email-clue.inspected .clue-icon {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.clue-content {
+  flex: 1;
+}
+
+.clue-content strong {
+  display: block;
+
+  margin-bottom: 3px;
+
+  font-size: 12px;
+
+  color: var(--text-primary);
+}
+
+.clue-content p {
+  margin: 5px 0 0;
+
+  font-size: 10px;
+  line-height: 1.55;
+
+  color: var(--text-secondary);
+}
+
+.clue-button {
+  flex-shrink: 0;
+
+  padding: 7px 9px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 7px;
+
+  background: transparent;
+
+  color: var(--text-secondary);
+
+  font-size: 9px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.clue-button:hover:not(:disabled) {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.clue-button:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
